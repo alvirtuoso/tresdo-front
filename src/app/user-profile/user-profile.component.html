@@ -1,0 +1,48 @@
+
+<div class="modal-container modal-center">
+  <div class="modal-block modal-width">
+    <div class="modal-head">
+
+      <div (click)="closeForm()"><div class="hover-pointer"><i class="material-icons right">close</i></div>
+       Update  Profile
+      </div>
+    </div>
+    <div class="modal-bod">
+      <div class="row">
+
+        <form [formGroup]="userForm" (ngSubmit)="saveUser()">
+          <div class="row">
+              <div class="input-field col s6">
+                <input type="text" formControlName="fname" [(ngModel)]="aUser.first" placeholder="First"/> 
+                <p *ngIf="userForm.controls.fname.errors?.rangeLength">max 50 chars length</p>
+              </div>
+              <div class="input-field col s6">
+                <input type="text" formControlName="lname" [(ngModel)]="aUser.last" placeholder="Last"/>
+                <p *ngIf="userForm.controls.lname.errors?.rangeLength">max 50 chars length</p>
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s4">
+                <input type="text" formControlName="email"  [(ngModel)]="aUser.email" placeholder="Email"/>
+                <p *ngIf="userForm.controls.email.errors?.required || userForm.controls.email.errors?.email">valid email required</p>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" formControlName="cell" [(ngModel)]="aUser.cell"  placeholder="Cell"/>
+                <p *ngIf="userForm.controls.cell.errors?.phone">invalid phone</p>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" formControlName="displayName" [(ngModel)]="aUser.display" placeholder="Display Name"/>
+                <p *ngIf="userForm.controls.displayName.errors?.required">required</p>
+              </div>
+
+          </div>
+          <div class="modal-foot">
+            <button type="submit" [disabled]="!userForm.valid">Submit</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+

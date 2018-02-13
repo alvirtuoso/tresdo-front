@@ -1,0 +1,37 @@
+<div class="auth">
+  <div>
+    <form #formData='ngForm' (ngSubmit)="loginPassword(formData)">
+        <p>
+            <label> Enter email address
+                <input type="text" name="email" (ngModel)="email" requred>
+            </label>
+        </p>
+        <p>
+        <label> Password
+            <input type="password" name="password" (ngModel)="password" required>
+        </label>
+        </p>
+
+        <button type="submit" [disabled]="!formData.valid">Login</button>
+
+<hr/>
+    </form>
+  </div>
+  <div>
+    <button (click)="loginGoogle()">Login with Google</button>
+  </div>
+    <div>
+        <a routerLink="/reset">Forgotten password?</a>
+    </div>
+    <div>
+        Don't have an account?
+    </div>
+    <div>
+        <a routerLink="/signup">Register</a>
+    </div>
+</div>
+
+
+
+
+

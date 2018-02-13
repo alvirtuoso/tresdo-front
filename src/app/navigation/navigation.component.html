@@ -1,0 +1,41 @@
+<clr-main-container>
+    <clr-header>
+      <div class="branding">
+          <a href="..." class="nav-link">
+              <clr-icon shape="vm-bug"></clr-icon>
+              <span class="title">Project Clarity</span>
+          </a>
+      </div>        
+
+        <div class="header-nav">
+            <a href="..." class="nav-link nav-icon">
+                <clr-icon shape="cloud"></clr-icon>
+            </a>
+            <a href="..." class="active nav-link nav-icon">
+                <clr-icon shape="folder"></clr-icon>
+            </a>
+        </div>
+
+        <div class="header-actions" [clr-nav-level]="1">
+          <clr-dropdown class="dropdown bottom-right">
+              <button class="nav-text" clrDropdownToggle>
+                  john.doe@vmware.com
+                  <clr-icon shape="caret down"></clr-icon>
+              </button>
+              <div class="dropdown-menu">
+                  <a href="..." clrDropdownItem>Preferences</a>
+                  <a href="..." clrDropdownItem>Log out</a>
+              </div>
+          </clr-dropdown>
+        </div>
+
+    </clr-header>
+    <div class="content-container">
+        <main class="content-area">
+
+          <router-outlet></router-outlet>
+
+        </main>
+
+    </div>
+</clr-main-container>

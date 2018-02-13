@@ -1,0 +1,493 @@
+@import '../style/bourbon/bourbon';
+@import "variables.scss";
+
+// styles in src/style directory are applied to the whole page
+body {
+    background-color: $bg-gradient-2;
+    color:$primary-text-color;
+}
+a {
+    color: $link;
+}
+section {
+  @include linear-gradient(to top, $primary-color-light, $offWhite); 
+}
+.am-container{
+    padding: 0.01em 16px;
+    overflow: auto;
+    min-width: 100%;
+}
+
+.completed {
+    text-decoration: line-through;
+}
+
+/* Rules for sizing the icon. */
+.md-18 { font-size: 18px; }
+.md-24 { font-size: 24px; }
+.md-36 { font-size: 36px; }
+.md-48 { font-size: 48px; }
+
+/* Rules for using icons as black on a light background. */
+.md-dark { color: rgba(0, 0, 0, 0.54); }
+.md-dark .md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+/* Rules for using icons as white on a dark background. */
+.md-light { color: rgba(255, 255, 255, 1); }
+.md-light .md-inactive { color: rgba(255, 255, 255, 0.3); }
+
+.orange600 { color: #FB8C00; }
+.pinkish {
+  background-color: #ee6e73;
+}
+/* Close Button */
+
+[class*='close-'] {
+  color: $primary-color-dark;
+  font: 16px/100% arial, sans-serif;
+  position: absolute;
+  right: 5px;
+  text-decoration: none;
+  text-shadow: 0 1px 0 #fff;
+  top: 10px;
+
+}
+
+.close-button:after {
+  content: 'X'; /* ANSI X letter */
+}
+
+.close-button:hover {
+  color: lighten(maroon, 20);
+}
+
+.input12{
+  height: 1.5em !important;
+  margin: 0 !important;
+  width: 90% !important;
+}
+
+// Cards
+.cards {
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 0 4px;
+  padding: 0 2px;
+  z-index: 1;
+  min-height: 0;
+  height: 100%;
+
+}
+.items {
+    margin-top: 10px;
+    z-index: 1;
+    min-height: 0;
+    height: 100%;
+
+}
+.item,
+.card-item{
+    background-color: #fff;
+    transition: box-shadow .25s;
+    padding: 2px;
+    margin: 2px 0;
+    width: 100%;
+    border: 1px solid $divider-color;
+    border-radius: $base-border-radius;
+    box-shadow: 0 2px 4px darken($base-background-color, 25%);
+    max-height: 100%;
+    display: block;
+    color: $primary-text-color;
+      &:focus,
+      &:hover {
+        background-color: $offWhite;
+
+    img {
+      opacity: $card-image-hover-opacity;
+    }
+  }
+}
+.spacer{
+  min-width: 75px;
+}
+.btn-card-add{
+   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 10px 5px;
+  padding: 0 5px;
+  text-align: center;
+  font-size: 1.9em;
+  color: #fff;
+  background-color: teal;
+  border-radius: 5%;
+  box-shadow: 0 2px 4px lighten(teal, 10%);
+    &:focus,
+    &:hover{
+      background-color: lighten(teal, 2%);
+      font-size: 2.1rem;
+      color: $offWhite;
+      cursor: pointer;
+    }
+}
+.item-form,
+.card-form{
+  width: 100%;
+  display: block;
+  .add{
+    padding: 5px 5px;
+    background-color: $action-color;
+    &:hover {
+    cursor: pointer;
+
+    img {
+      opacity: $card-image-hover-opacity;
+     }
+   }
+  }
+  .discard{
+      &:hover {
+    cursor: pointer;
+
+    img {
+      opacity: $card-image-hover-opacity;
+    }
+  }
+  }
+}
+
+.am-card {
+  background-color: $card-background;
+  border: $card-border;
+  border-radius: $base-border-radius;
+  box-shadow: 0 2px 4px darken($base-background-color, 10%);
+  cursor: pointer;
+  min-width: 250px;
+  // flex-grow: 2;
+  margin: 10px 5px;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  min-height: 300px;
+  .card-image {
+    background-color: $card-image-hover-color;
+    height: 150px;
+    max-height: 150px;
+    overflow: hidden;
+
+    img {
+      @include border-top-radius($base-border-radius);
+      opacity: 1;
+      transition: all 0.2s ease-in-out;
+      width: 100%;
+    }
+  }
+
+  .card-copy {
+    font-size: 0.9em;
+    line-height: 1.5em;
+    padding: ($base-spacing / 2) ($base-spacing / 2);
+
+    p {
+      margin: 0 0 ($base-spacing / 2);
+    }
+  }
+
+  &:focus,
+  &:hover {
+    cursor: pointer;
+
+    img {
+      opacity: $card-image-hover-opacity;
+    }
+  }
+
+  &:active {
+    background-color: $card-background;
+
+    .card-header {
+      background-color: $card-background;
+    }
+  }
+}
+
+  .card-header {
+    background-color: $card-header-background;
+    border-radius: $base-border-radius $base-border-radius 0 0;
+    font-weight: bold;
+    line-height: 1.5em;
+    transition: all 0.2s ease-in-out;
+    // display: flex;
+    // justify-content: space-between;
+    padding: 0 5px;
+
+  }
+
+  .header-item {
+    padding: 0 5px;
+    
+    .right {
+      float: right;
+      margin-top: -20px;
+    }
+
+  }
+
+  .header-button{
+    float: right;
+    
+  }
+
+  .hover-pointer{
+    box-shadow: 0 2px 4px ligten(teal, 25%);
+    &:hover{
+    background-color: ligten(teal, 25%);
+    color: $nav-menu-color;
+    cursor: pointer;
+    }
+  }
+// end of cards
+
+// ****** The Modal (background) *******/
+.modal-container {
+  display: flex;
+  align-items: center;
+  // justify-content: center;
+    z-index: 1; /* Sit on top */
+    padding-top: 10px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    min-height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    // background-color: rgb(0,0,0); /* Fallback color */
+    // background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+
+}
+
+// * Modal body */
+.modal-block {
+    flex: 1;
+    display: flex;
+    // flex-direction: row;
+    flex-flow: wrap row;
+    // max-width: 50%;
+
+    background-color: ghostwhite;
+    margin: 0 5px;
+    padding: 5px;
+    border: 1px solid #888;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+
+}
+.modal-width{
+  max-width: 50%;
+}
+.modal-right{
+  justify-content: flex-end
+}
+
+.modal-center{
+  justify-content: center
+}
+.modal-head {
+    align-self: flex-start;
+    flex-direction: row;
+    padding: 2px 16px;
+    border: 1px solid $divider-color;
+    color: #fff;
+    background-color: teal;
+    font-size: 1rem;
+    min-width: 100%;
+}
+
+.modal-bod {
+  padding: 2px 16px;
+  width: 100%;
+  }
+.modal-confirm{
+  max-width: 40%;
+}
+
+.modal-foot {
+    padding: 2px 16px;
+    // border-top: 1px solid $divider-color;
+    color: $primary-text-color;
+    text-align: center;
+    align-self: flex-end;
+}
+// * Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+// * Boards link */
+.boards-link{
+    transition: background-color .3s;
+    transition-property: background-color;
+    transition-duration: 0.3s;
+    transition-timing-function: initial;
+    transition-delay: initial;
+    font-size: 1rem;
+    color: #fff;
+    display: block;
+    padding: 0 15px;
+    cursor: pointer;
+}
+// * End of Boards link //
+
+// *** Login / Signup *****/
+.auth div{
+  display: flex; 
+  justify-content: center; 
+  text-align: center; 
+  flex-flow: wrap row;
+  width: 100%;
+
+}
+// ** end of Login *** /
+
+
+.center-block{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+.float-right{
+  float: right;
+}
+// *** Forms ****
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid $warning-red; /* green */
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid $ok-green; /* red */
+}
+.alert {
+padding: 8px 35px 8px 14px;
+margin-bottom: 18px;
+color: #c09853;
+text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+background-color: #fcf8e3;
+border: 1px solid #fbeed5;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+border-radius: 4px;
+
+}
+.alert .close {
+position: relative;
+top: -2px;
+right: -21px;
+line-height: 18px;
+}
+
+.alert-success {
+color: #468847;
+background-color: #dff0d8;
+border-color: #d6e9c6;
+}
+
+.alert-danger,
+.alert-error {
+color: #b94a48;
+background-color: #f2dede;
+border-color: #eed3d7;
+}
+
+// input text with a button next to it
+.edit_field {
+    display: inline-block;
+    border: 1px inset #ccc;
+}
+
+.edit_field input {
+    border: none;
+    padding: 0;
+}
+
+.edit_field button {
+    border: none;
+    background: none;
+}
+// ** End of Forms ****
+
+// ** Callout Dialogs ** 
+.callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+.callout h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+.callout p:last-child {
+    margin-bottom: 0;
+}
+.callout code {
+    border-radius: 3px;
+}
+.callout+.callout {
+    margin-top: -5px;
+}
+.callout-default {
+    border-left-color: #777;
+}
+.callout-default h4 {
+    color: #777;
+}
+.callout-primary {
+    border-left-color: #428bca;
+}
+.callout-primary h4 {
+    color: #428bca;
+}
+.callout-success {
+    border-left-color: #5cb85c;
+}
+.callout-success h4 {
+    color: #5cb85c;
+}
+.callout-danger {
+    border-left-color: #d9534f;
+}
+.callout-danger h4 {
+    color: #d9534f;
+}
+.callout-warning {
+    border-left-color: #f0ad4e;
+}
+.callout-warning h4 {
+    color: #f0ad4e;
+}
+.callout-info {
+    border-left-color: #5bc0de;
+}
+.callout-info h4 {
+    color: #5bc0de;
+}
+
+// ** End of Callout **/
+
+// ** W3.css custom extentions ** /
+
+.w3-light-red{
+  background-color: $nav-menu-color;
+  color: white;
+}
+
+// ** end of w3css custom ** /

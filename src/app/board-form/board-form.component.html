@@ -1,0 +1,25 @@
+
+    <div class="modal-bod">
+
+      <app-dialog [(visible)]="showCreateBoard.isOn" [width_size]="'40%'" [newTitle]="'New Board'">
+        <form (ngSubmit)="onSubmit(boardForm)" #boardForm="ngForm">
+          <div class="modal-bod">
+              <!--<div class="input-field col s12">-->
+                <input name="title" id="title" type="text" ngModel required>
+                <label for="title">Title</label>
+              <!--</div>-->
+          </div>
+          <div class="modal-bod">
+            <div >
+              <input name="classification_id" type="checkbox" id="public" value="faad67d2-7ec6-494e-a4ef-ac126481f77f" [checked]="isPublic" (change)="isPublic = $event.target.checked" />
+              <label for="public">Public</label>
+            </div>
+          </div>
+          <div class="modal-foot">
+            <button type="submit"  [disabled]="!boardForm.form.valid">Add</button>
+          </div>
+        </form>
+      </app-dialog>
+
+    </div>
+

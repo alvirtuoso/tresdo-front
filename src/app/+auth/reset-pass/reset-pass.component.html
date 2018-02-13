@@ -1,0 +1,25 @@
+<div class="auth">
+
+        <div *ngIf="message" class="callout callout-default">
+            {{ message }}
+        </div>
+
+</div>
+<div class="auth">
+          <form #formData='ngForm' (ngSubmit)="onSubmit(formData)">
+
+                <div>
+                    <label> Enter email address
+                        <input type="email" name="email" placeholder="e.g email@address.com" (ngModel)="email" required>
+                    </label>
+                </div>
+
+
+                <div>
+                    <button type="submit" class="button" [disabled]="!formData.valid">Submit</button>
+                    <br/>
+                    <a routerLink="/">Cancel</a>
+                </div>
+
+        </form>
+</div>

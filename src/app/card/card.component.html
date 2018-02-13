@@ -1,0 +1,108 @@
+<div *ngIf="errorMessage">Error: {{errorMessage}}</div>
+
+<div class="cards" *ngIf="cards.length > 0">
+      <div class="am-card" *ngFor="let card of cards; let i = index; trackBy card?.card_Id">
+          <div class="card-header" *ngIf="!hideme[card.card_Id]">
+            <span (click)="toggleEditTitle(card.card_Id)">{{card.name}}</span>
+
+            <div class="header-button" *ngIf="!hideme[card.sort_Order]">
+
+              <i class="material-icons" (click)="hideme[card.sort_Order] = !hideme[card.sort_Order]">add</i>
+              <ul [attr.id]="card.card_Id" class="dropdown-content">
+                <li><span (click)="deleteCard(card.card_Id, card.name, i)">Delete</span></li>
+                <li><span>Edit</span></li>
+              </ul>
+              <a materialize="dropdown" [materializeParams]="[{hover: true}]" class="dropdown-button" [attr.data-activates]="card.card_Id"><i class="material-icons">arrow_drop_down</i></a>
+
+            </div>
+
+          </div>
+          <div class="card-header"*ngIf="hideme[card.card_Id]">
+             <div class="header-item">
+
+                 <input autofocus #namebox class="input12" [(ngModel)]="card.name"  (keyup.enter)="onEnter({'namebox': namebox.value, 'cardid': cardid.value});toggleEditTitle(card.card_Id);">
+
+               <div class="header-button" (click)="toggleEditTitle(card.card_Id)"><i class="material-icons right">close</i></div>
+             </div>
+
+             <input type="hidden" #cardid [value]="card.card_Id" >
+          </div>
+        <div [attr.title]="card.card_Id" class="items"[dragula]="bagOne" [dragulaModel]='card.items'>
+          <div class="item-form" *ngIf="hideme[card.sort_Order]">
+            <form (ngSubmit)="onSubmit(itemForm, card)" #itemForm="ngForm">
+              <input name="title" id="title" type="text" ngModel required>
+              <input type="hidden" name="card_Id" id="card_Id" [(ngModel)]="card.card_Id">
+              <input name ="sort_order" id="sort_order" type="hidden" [(ngModel)]="card.sort_Order">
+               <button type="submit" class="waves-effect waves-light btn" [disabled]="!itemForm.form.valid">Add</button>
+               <button  (click)="hideme[card.sort_Order] = !hideme[card.sort_Order]">Discard</button>
+            </form>
+          </div>
+
+          <div (click)="openItem(item, i, card)" [attr.id]="item.item_Id" [attr.title]="i" class="card-item" *ngFor="let item of card.items; let i = index; trackBy item?.item_Id">
+
+              <!--{{item.title}} {{i}} so: {{item.sort_Order}} <i class="material-icons right">more_vert</i>-->
+              <item [item]="item" [index]="i"></item>
+          </div>
+
+        </div>
+
+    </div>
+      <div class="btn-card-add" (click)="addNew()">
+          +
+      </div>
+     <div class="spacer"></div>
+
+</div>
+
+      <app-dialog [(visible)]="itemDlgIsOpen" [newTitle]="itemDlgTitle" [width_size]="'90%'">
+
+        <div class="row" sytle="overflow: auto;">
+          <div class="col s6"  style="margin-left: 50px">
+
+            <div class="row">
+              <div class="col s12">
+                <label>Description</label>
+                <quill-editor [(ngModel)]="editableContent" debounce [delay]="900" (onTextChange)= onTextUpdate()>
+                  <div quill-editor-toolbar>
+                    <span class="ql-formats">
+                      <button class="ql-bold" [title]="'Bold'"></button>
+                      <button class="ql-italic" [title]="'Italic'"></button>
+                      <button class="ql-underline" [title]="'Underline'"></button>
+                    </span>
+
+                    <span class="gl-formats">
+                      <button class="ql-list" value="ordered"></button>
+                      <button class="ql-list" value="bullet"></button>
+                    </span>
+                  </div>
+                </quill-editor>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 80px">
+              <label>Attachments</label>
+              
+            </div>
+
+          </div>
+          <div class="col s4">
+            <div class="collection">
+              <a class="collection-item btn-flat" (click)="ArchiveItem()" >Archive</a>
+              <a class="collection-item btn-flat" (click)="toggleDate()">
+                {{btnDate}} <label class="float-right">{{date}}</label>
+                  <my-date-picker *ngIf="showDatePicker" [options]="myDatePickerOptions"  (dateChanged)="onDateChanged($event)"></my-date-picker>
+              </a>
+              <a class="collection-item">Attach Files
+                
+              </a>
+              <a class="collection-item btn-flat">
+                <!-- <upload [param]="{itemId: fileUploadParam.itemId}" ></upload> -->
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </app-dialog>
+
+
+
+
