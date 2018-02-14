@@ -7,8 +7,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   selector: 'nav-menu',
-  templateUrl: './nav.component.html'
-  // styleUrls: ['./nav.component.css']
+  templateUrl: './nav.component.html',
+  styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
 
