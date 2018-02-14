@@ -1,4 +1,4 @@
-<div *ngIf="errorMessage">Error Found: {{errorMessage}}</div>
+<div *ngIf="errorMessage">Error: {{errorMessage}}</div>
 
 <div class="cards" *ngIf="cards.length > 0">
       <div class="am-card" *ngFor="let card of cards; let i = index; trackBy card?.card_Id">
