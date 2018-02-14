@@ -1,6 +1,22 @@
 @import '../style/bourbon/bourbon';
 @import "variables.scss";
 
+//  **************    N O T E S:  ************
+// Start: for bootstrap css framework reference
+// 1) npm install --save bootstrap@4.0.0-beta
+// 2) In .angular-cli.json's "styles":[] array add "../node_modules/bootstrap/dist/css/bootstrap.css",
+
+// Make use of these Bootstrap base tools mixins via import:
+// @import 
+//   '~bootstrap/scss/functions',
+//   '~bootstrap/scss/variables',
+//   '~bootstrap/scss/mixins',
+//   '~bootstrap/scss/print',
+//   '~bootstrap/scss/reboot',
+//   '~bootstrap/scss/type';
+
+// End: bootstrap css reference
+
 // styles in src/style directory are applied to the whole page
 body {
     background-color: $bg-gradient-2;
