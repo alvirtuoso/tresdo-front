@@ -20,12 +20,12 @@
       "prefix": "app",
       "styles": [
         "../node_modules/materialize-css/dist/css/materialize.css",
-        "styles.css"
+        "style/app.scss"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",
         "../node_modules/hammerjs/hammer.js",
-        "../node_modules/materialize-css/dist/js/materialize.js"        
+        "../node_modules/materialize-css/dist/js/materialize.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
@@ -59,7 +59,8 @@
     }
   },
   "defaults": {
-    "styleExt": "css",
-    "component": {}
+    "styleExt": "scss",
+    "component": {
+    }
   }
 }

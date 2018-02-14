@@ -89,7 +89,7 @@
               <a class="collection-item btn-flat" (click)="ArchiveItem()" >Archive</a>
               <a class="collection-item btn-flat" (click)="toggleDate()">
                 {{btnDate}} <label class="float-right">{{date}}</label>
-                  <my-date-picker *ngIf="showDatePicker" [options]="myDatePickerOptions"  (dateChanged)="onDateChanged($event)"></my-date-picker>
+                  <my-date-picker style="position:fixed" *ngIf="showDatePicker" [options]="myDatePickerOptions"  (dateChanged)="onDateChanged($event)"></my-date-picker>
               </a>
               <a class="collection-item">Attach Files
                 
