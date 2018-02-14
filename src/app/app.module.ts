@@ -43,6 +43,7 @@ import { TestComponent } from './test/test.component';
 
 // This projects modules
 import { AuthModule } from './+auth/auth.module';
+import {AuthService} from './+auth/auth-service';
 import { AuthGuard } from './+auth/auth-guard.service';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { DialogComponent } from './dialog/dialog.component';
@@ -112,6 +113,8 @@ import { environment } from '../environments/environment';
     CardService,
     ItemService,
     DragulaService,
+    HttpModule,
+    AuthService,
     AuthGuard,
     Global
   ],
