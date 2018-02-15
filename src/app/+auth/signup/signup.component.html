@@ -1,18 +1,32 @@
-
 <div class="auth">
-    <form #formData='ngForm' (ngSubmit)="onSubmit(formData)">
-        <p>
-            <label> Enter email address
-                <input type="text" name="email" (ngModel)="email" requred>
+    <div>
+        <form #formData='ngForm' (ngSubmit)="onSubmit(formData)">
+            <p>
+                <label> Enter email address
+                    <input type="text" name="email" (ngModel)="email" requred>
+                </label>
+            </p>
+            <p>
+            <label> Password
+                <input type="password" name="password" (ngModel)="password" required>
             </label>
-        </p>
-        <p>
-        <label> Password
-            <input type="password" name="password" (ngModel)="password" required>
-        </label>
-        </p>
+            </p>
+    
+            <button type="submit" [disabled]="!formData.valid">Register</button>
+            <a routerLink="/login">Login</a>
+        </form>
+        
+    </div>
+    <br>
+  <div>
+      {{message}}
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
 
-        <button type="submit" [disabled]="!formData.valid">Register</button>
-        <a routerLink="/login">Login</a>
-    </form>
-</div>
+

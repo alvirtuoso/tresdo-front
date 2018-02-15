@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 // Login with username and password
   loginPassword(formData) {
     if(formData.valid) {
-      // console.log(formData.value);
+      console.log("formdata login: ", formData.value);
       this.afAuth.auth.signInWithEmailAndPassword(
        formData.value.email,
        formData.value.password
@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
 
   // Login using Google account
   loginGoogle() {
+    console.log('login starts');
     this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
         .then(
         (success) => {

@@ -72,7 +72,8 @@ constructor(private request: Http, private global: Global) {
     createItemForCard(item: Item): Observable<Item[]>{
         let headers    = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
         let options    = new RequestOptions({ headers: headers });
-
+        console.log("createItemForCard item", item);
+        console.log("createItemForCard url", this.apiUrl);
         return this.request.post(`${this.apiUrl}/createforcard`, item, options)
                         .do( res => console.log('item.service.createItemForCard() HTTP response:', res))
                          .map((res:Response) => res.json())

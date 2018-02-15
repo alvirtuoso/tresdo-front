@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+// import { AlertService } from '../../shared/alertService/alert.service';
 
 @Component({
   selector: 'signup',
@@ -12,9 +13,9 @@ export class SignupComponent {
 
   constructor(private af: AngularFireAuth, private router: Router) {  }
 
+  message = '';
   onSubmit(formData) {
     if(formData.valid) {
-      // console.log(formData.value);
       this.af.auth.createUserWithEmailAndPassword(
         formData.value.email,
         formData.value.password
@@ -25,7 +26,7 @@ export class SignupComponent {
       }).catch(
         (err) => {
         console.log('User Reg Error: ', err);
-        this.router.navigate(['/login']);
+        this.message = err;
       })
     }
   }
