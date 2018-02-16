@@ -22,7 +22,7 @@ export class SignupComponent {
       ).then(
         (success) => {
         console.log('User Registration Success: ', success);
-        this.router.navigate(['/login'])
+        this.router.navigate(['/login']);
       }).catch(
         (err) => {
         console.log('User Reg Error: ', err);
