@@ -13,19 +13,29 @@ export class BoardService extends Repository{
         super(request);
     }
     apiUrl = this.global.apiBoardUrl; // 'http://localhost:5000/api/board';
+
     create(board: Board): Observable<Board>{
-        // let bodyString = JSON.stringify(board);
-        let headers      = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
-        let options       = new RequestOptions({ headers: headers });
-        console.log('board.service Create bodyString: ', board);
-        return this.request.post(`${this.apiUrl}/create`, board, options)
+        console.log('create board', board);
+        let bodyString = JSON.stringify(board);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+
+        return this.request.post(`${this.apiUrl}/create`, board, { headers: headers })
                         .do( res => console.log('board.service.create() HTTP response:', res))
-                         .map((res:Response) => res.json())
-                         .catch(this.handleError);
+                        .map((res:Response) => res.json())
+                        .catch(this.handleError);
     }
-    // Retrieves all boards from the DB
-    getAll(): Observable<Board[]>{
-         return this.request.get(this.apiUrl)
+
+    // Retrieves all public boards from the DB
+    getPublicBoards(): Observable<Board[]>{
+         return this.request.get(this.apiUrl + '/public')
+                    .do( res => console.log('board.service.getAll() HTTP response:', res))
+                    .map((res: Response) => res.json())
+                    .catch(this.handleError);
+    }
+
+    // Retrieves all private boards by owner_id from the DB
+    getPrivateBoards(userEmail:String): Observable<Board[]>{
+            return this.request.get(`${this.apiUrl}/private/${userEmail}`)
                     .do( res => console.log('board.service.getAll() HTTP response:', res))
                     .map((res: Response) => res.json())
                     .catch(this.handleError);

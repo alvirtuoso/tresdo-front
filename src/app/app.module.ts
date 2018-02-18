@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, JsonpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, PreloadAllModules } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -72,6 +73,7 @@ import { environment } from '../environments/environment';
     HttpModule,
     JsonpModule,
     FormsModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     ModalModule.forRoot(),
     ClarityModule.forRoot(),

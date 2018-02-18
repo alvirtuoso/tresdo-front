@@ -18,7 +18,7 @@ export class UserService extends Repository{
         let params = "email=" + email + "&displayName=" + displayName;
         let headers    = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
         let options    = new RequestOptions({ headers: headers });
-
+        
         return this.request.post(`${this.apiUrl}/add`, params, options)
                         .do( res => console.log('user.service.Add() HTTP response:', res.json()))
                          .map((res:Response) => res.json())
@@ -45,7 +45,7 @@ export class UserService extends Repository{
     }
     // Retrieves user by email
     getUserByEmail(email: string): Observable<User>{
-        return this.request.get(`${this.apiUrl}/${email}`)
+        return this.request.get(`${this.apiUrl}/email/${email}`)
                     .do( res => console.log('getUserByEmail HTTP response:', res))
                     .map((res: Response) => res.json())
                     .catch(this.handleError);

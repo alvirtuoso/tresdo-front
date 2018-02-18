@@ -36,7 +36,7 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
   
     this.observe = this.route.params
-      .switchMap((param: Params) => this.userSvc.getUserByEmail('wedneer@yahoo.com'))//param['user']))
+      .switchMap((param: Params) => this.userSvc.getUserByEmail(param['user']))
       // Somehow the this.usr doesn't get bound when used in the template. Have to create another object userObj to hold values
       // Perhaps, the this.usr is still subscribed to an observable of ActiveRoute or maybe the switchMap is the culprit by locking in this.usr??
      .subscribe((usr:User) => {

@@ -10,7 +10,6 @@ import { Global } from '../shared/global';
 export class BoardFormComponent implements OnInit {
   @Input() showCreateBoard;
   @Input() newTitle: string;
-  // showCreateBoard: { isOn: boolean; } = { isOn: true };
 
   board = new Board();
   errorMessage: string;
@@ -29,13 +28,23 @@ export class BoardFormComponent implements OnInit {
   closeBoard(){
       this.showCreateBoard.isOn = !this.showCreateBoard.isOn;
   }
-
+// Close the form by navigating back to home page
+closeForm(){
+  this.router.navigate(['']); // navigate to home
+}
 // Save new board from the form.
   onSubmit(form:any):void{
     var classId = this.isPublic ? this.global.publicClassificationId : this.global.teamClassificationId;
-
+    console.log('board-form onSubmit', form)
     //  cast to Board object
-    this.board = <Board>{title: form.value["title"], owner_Id: this.global.ownerid, classification_Id: classId};
+    this.board = <Board>{
+       board_Id: null
+      , owner_Id: window.localStorage.getItem("currentUserId")
+      ,title: form.value["title"]
+      , date_Created: new Date(Date.now())
+      , classification_Id: classId
+      , initial_Card_Id: null
+    };
 
     this.boardSvc.create(this.board)
       .subscribe((data) => {this.board = data; this.router.navigate(['/board', this.board.board_Id])}, err => this.errorMessage = <any>err);

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { UserService } from '../../shared/userService/user.service';
 import * as firebase from 'firebase/app';
 // import { AlertService } from '../../shared/alertService/alert.service';
 
@@ -11,7 +12,7 @@ import * as firebase from 'firebase/app';
 
 export class SignupComponent {
 
-  constructor(private af: AngularFireAuth, private router: Router) {  }
+  constructor(private af: AngularFireAuth, private userService: UserService, private router: Router) {  }
 
   message = '';
   onSubmit(formData) {
@@ -22,6 +23,7 @@ export class SignupComponent {
       ).then(
         (success) => {
         console.log('User Registration Success: ', success);
+        this.userService.Add
         this.router.navigate(['/login']);
       }).catch(
         (err) => {
@@ -30,4 +32,12 @@ export class SignupComponent {
       })
     }
   }
+   // Saves user to the Db if it doesn't exist then redirects to home.
+   private saveUserToDb():void{
+    this.userService.Add(this.af.auth.currentUser.email, this.af.auth.currentUser.displayName)
+      .finally(()=> this.router.navigate([''])) // redirect to home
+      .do((usr) => window.localStorage.setItem("currentUserId", usr.user_Id)) 
+      .subscribe((usr)=> {console.log('saveUserToDb in nav.component', usr)});
+  }
+
 }

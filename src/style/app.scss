@@ -283,7 +283,9 @@ section {
 
 // * Modal body */
 .modal-block {
-    flex: 1;
+    // flex: 1;
+    position: fixed;
+    margin-top: 105px !important;
     display: flex;
     // flex-direction: row;
     flex-flow: wrap row;

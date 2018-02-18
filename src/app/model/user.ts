@@ -1,6 +1,6 @@
 export class User {
 
-    constructor(public user_Id: number
+    constructor(public user_Id: string
                 , public active: boolean
                 , public email?: string
                 , public address?: string
