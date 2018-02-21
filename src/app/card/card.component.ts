@@ -65,8 +65,8 @@ private GetItemAttachmentsByItemId(item_Id: string): void{
     err => { this.errorMessage = <any>err }
   );
 }
-private removeMediaAttachment(media_data:Media_Data): void{
-  this.itemSvc.removeMediaAttachment(media_data);
+private removeMediaAttachment(item_Media_Data_Id:string): void{
+  this.itemSvc.removeMediaAttachment(item_Media_Data_Id);
 }
 /**
  * Sets options for the date picker UI
@@ -295,10 +295,7 @@ deleteCard(card_id: string, name: string, i: number){
         .okBtn('Delete')
         .cancelBtn('Cancel')
         .open();
-            // .catch(err => console.log('Deletion Error Occurred: ', err)) // catch error not related to the result (modal open...)
-            // .then(dialog => dialog.result) // dialog has more properties,lets just return the promise for a result.
-            // .then(result => {this.cardSvc.delete(deleteByIdUrl); this.cards.splice(i, 1)}) // if were here ok was clicked.
-            // .catch(err => console.log('Cancelled Deletion', err)); // if were here it was cancelled (click or non block click)
+
   dialogRef.result
   .catch(err => console.log('Deletion Error Occurred: ', err)) // catch error not related to the result (modal open...)
   .then(dialog => dialog.result) // dialog has more properties,lets just return the promise for a result.

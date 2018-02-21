@@ -40,16 +40,16 @@ constructor(private request: Http, private reqClient: HttpClient, private global
     getAttachmentsMediaByItemId(itemId: string): Observable<Media_Data[]>{
         console.log('getAttachmentsMediaByItemId start:', `${this.apiMediaUrl}/${itemId}`)
         return this.request.get(`${this.apiMediaUrl}/${itemId}`)
-        .do( res => console.log('getAttachmentsMediaByItemId response:', res))
+        .do( res => { }) //--> todo: do some logging
         .map((res: Response) => res.json())
         .catch(this.handleError);
     }
 
-    removeMediaAttachment(media_data: Media_Data):void{
-        console.log('itemSvc removeMediaAttachment:', media_data);
-        let apiUrl = `${this.global.apiMediaUrl}/deletemedia/${media_data.item_media_data_id}`;
+    removeMediaAttachment(item_Media_Data_Id: string):void{
+        let apiUrl = `${this.global.apiMediaUrl}/deletemedia/${item_Media_Data_Id}`;
+        console.log('itemSvc removeMediaAttachment item_Media_Data_Id:', item_Media_Data_Id);
         this.request.delete(apiUrl)
-            .do(res => console.log('itemSvc removeMediaAttachment:', apiUrl))
+            .do(res => {}) //--> todo: do some logging
             .catch(this.handleError)
             .subscribe(res => console.log(res));
     }

@@ -79,7 +79,7 @@
               <br>
               <div class="chip" *ngFor="let media of itemAttachments; let i = index; trackBy media?.media_data_Id">
                   {{media.filename}}
-                  <i class="close material-icons" (click)="removeMediaAttachment(media)">close</i>
+                  <i class="close material-icons" (click)="removeMediaAttachment(media.item_Media_Data_Id)">close</i>
               </div>
               <!-- *ngFor="let card of cards; let i = index; trackBy card?.card_Id" -->
             </div>
