@@ -35,7 +35,7 @@ export class CardService extends Repository{
 
     getCardsByBoardId(boardId:string): Observable<Card[]>{
          return this.request.get(`${this.apiUrl}/${boardId}`)
-                    .do( res => console.log('card.service getCardsByBoardId() HTTP response:', res.json()))
+                    .do( res => {})
                     .map((res: Response) => res.json())
                     .catch(this.handleError);
     }

@@ -9,46 +9,19 @@
 <hr />
   <h3>Test Area For Now</h3>
 
-  <img src="api/account/GetImageByAccountId/12345" alt="" />
+  <!-- <img src="api/account/GetImageByAccountId/12345" alt="" /> -->
 <h3 style="text-align: center">
   Someday is the day that never happens. If your day becomes Someday then this app is for you!
 </h3>
 <hr />
-
+<h4>{{title}}</h4>
 <!-- ******* U P L O A D <upload [param]="{itemId:'sampleItemIdddd'}"></upload> *******-->
-<!--<input debounce [delay]="3000" (func)="myfunction('inputtestDebounce value')" [(ngModel)]="editableContent" name="Debounce input">-->
+<input debounce [delay]="700" (onKeyupEmit)="onTextUpdate($event)" [(ngModel)]="title">
+<!-- [(ngModel)]="textDescription" -->
 
 
-<div *ngIf="showEditor" [innerHTML]="editableContent"></div>
 
-    <a (click)="showEditor = !showEditor">Edit</a>
-    <div *ngIf="showEditor" style="max-width: 20%">
-      <quill-editor [(ngModel)]="editableContent" debounce [delay]="2000" (onTextChange)="myfunction(editableContent)">
-        <div quill-editor-toolbar>
-          <span class="ql-formats">
-            <button class="ql-bold" [title]="'Bold'"></button>
-            <button class="ql-italic" [title]="'Italic'"></button>
-            <button class="ql-underline" [title]="'Underline'"></button>
-             <button class="ql-strike" [title]="'Strike'"></button>
-             <button class="ql-image" [title]="'Image'"></button>
-          </span>
 
-          <span class="ql-formats">
-            <select class="ql-align" [title]="'Aligment'">
-              <option selected></option>
-              <option value="center" label="Center"></option>
-              <option value="right" label="Right"></option>
-              <option value="justify" label="Justify"></option>
-            </select>
-          </span>
-          <span class="gl-formats">
-            <button class="ql-list" value="ordered"></button>
-            <button class="ql-list" value="bullet"></button>
-          </span>
-        </div>        
-      </quill-editor>
-        <!--<inline-editor type="text" [(ngModel)]="editableText" (onSave)="saveEditable($event)" name="editableText1" size="8"></inline-editor>-->
-    </div>
 <!--<p-slider [(ngModel)]="val"></p-slider>
 <p-editor [(ngModel)]="text1" [style]="{'height':'320px'}"></p-editor>-->
 <!--

@@ -10,6 +10,7 @@ import { Modal } from 'ngx-modialog/plugins/bootstrap';
 // import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { dragula, DragulaService } from 'ng2-dragula/ng2-dragula';
 import {IMyOptions, IMyDateModel} from 'mydatepicker';
+import { Media_Data } from '../model/media_data';
 
 @Component({
   selector: 'card',
@@ -19,6 +20,30 @@ import {IMyOptions, IMyDateModel} from 'mydatepicker';
 export class CardComponent implements OnInit, AfterViewInit {
 @Input() boardId:string;
 @ViewChild('namebox') namebox: ElementRef;
+showDatePicker: boolean = false;
+showUploadInput: boolean = false;
+enableTitleEdit: boolean = false;
+date: string;
+textDescription: string;
+btnDateText: string = 'Due Date';
+uploadText: string = 'Upload';
+index: number;
+cards: Card[] = [];
+card: Card;
+anItem: Item; // gets initialized at openItem()
+items: Item[] = [];
+itemAttachments: Media_Data[];
+errorMessage: string;
+cardNameOnEdit: string;
+hideme:any = {};
+isDelete: boolean = false;
+deleteNow: boolean = false;
+itemDlgIsOpen: boolean = false;
+newCardName = '';
+itemDlgTitle = '';
+editableContent: string;
+showEditor: boolean = false;
+fileUploadParam:{itemId:string} = {itemId: ""};
 
   constructor(private dragulaService: DragulaService, vcRef: ViewContainerRef, public modal: Modal, private renderer: Renderer, private cardSvc: CardService, private itemSvc: ItemService, private global: Global)
   {
@@ -33,6 +58,16 @@ export class CardComponent implements OnInit, AfterViewInit {
 
   }
 
+private GetItemAttachmentsByItemId(item_Id: string): void{
+  console.log('GetItemAttachmentsByItemId start', item_Id);
+  this.itemSvc.getAttachmentsMediaByItemId(item_Id).subscribe(
+    attachments => { this.itemAttachments = attachments },
+    err => { this.errorMessage = <any>err }
+  );
+}
+private removeMediaAttachment(media_data:Media_Data): void{
+  this.itemSvc.removeMediaAttachment(media_data);
+}
 /**
  * Sets options for the date picker UI
  */
@@ -43,27 +78,6 @@ export class CardComponent implements OnInit, AfterViewInit {
       showTodayBtn: true,
   };
   
-  showDatePicker: boolean = false;
-  showUploadInput: boolean = false;
-  enableTitleEdit: boolean = false;
-  date: string;
-  btnDate: string = 'Due Date';
-  index: number;
-  cards: Card[] = [];
-  card: Card;
-  anItem: Item; // gets initialized at openItem()
-  items: Item[] = [];
-  errorMessage: string;
-  cardNameOnEdit: string;
-  hideme:any = {};
-  isDelete: boolean = false;
-  deleteNow: boolean = false;
-  itemDlgIsOpen: boolean = false;
-  newCardName = '';
-  itemDlgTitle = '';
-  editableContent: string;
-  showEditor: boolean = false;
-  fileUploadParam:{itemId:string} = {itemId: ""};
     /**
      * dateChanged callback function called when the user select the date. This is mandatory callback
      * in this option. There are also optional inputFieldChanged and calendarViewChanged callbacks.
@@ -71,7 +85,7 @@ export class CardComponent implements OnInit, AfterViewInit {
      */
     private onDateChanged(event: IMyDateModel) {
       this.date = event.formatted;
-      this.btnDate = 'Close';
+      this.btnDateText = 'Close';
       console.log('onDateChanged(): ', event.date, ' - jsdate: ', new Date(event.jsdate).toLocaleDateString(), ' - formatted: ', event.formatted, ' - epoc timestamp: ', event.epoc);
       console.log('thisanitem OndateChanged', this.anItem);
       if(this.anItem != null){
@@ -87,13 +101,24 @@ export class CardComponent implements OnInit, AfterViewInit {
    * Opens and closes the date picker
    */
   private toggleDate(){
-    if(this.btnDate == 'Close'){
-      this.btnDate = 'Due Date';
+    if(this.btnDateText == 'Close'){
+      this.btnDateText = 'Due Date';
     }
     else{
-      this.btnDate = 'Close';
+      this.btnDateText = 'Close';
     }
     this.showDatePicker = !this.showDatePicker;
+  }
+
+  private toggleUpload(){
+    if(this.uploadText == 'Upload'){
+      this.uploadText = 'Close';
+    }
+    else{
+      this.uploadText = 'Upload';
+    }
+    this.showUploadInput = !this.showUploadInput;
+
   }
 
   // Edits a Card's name
@@ -104,7 +129,7 @@ export class CardComponent implements OnInit, AfterViewInit {
     this.card.name = <string>value.namebox;
     this.card.card_Id = <string>value.cardid;
     this.card.active = true;
-    this.card.owner_Id = this.global.ownerid; //todo: Replace when login code is done
+    this.card.owner_Id = window.localStorage.getItem('currentUserId'); //todo: Replace when login code is done
     this.card.board_Id = this.boardId;
 
     // Call card edit service
@@ -115,20 +140,20 @@ export class CardComponent implements OnInit, AfterViewInit {
 }
 
   ngOnInit() {
-
+  
   }
 
   ngOnChanges(){
     if(this.boardId){
      this.getCardsByBoardId(this.boardId);
     }
-    console.log('card.component boardID', this.boardId);
   }
 
   ngAfterViewInit(){
     // set the focus on the input box when component loads
     // this.renderer.invokeElementMethod(this.namebox.nativeElement, 'focus', []);
   }
+
 
 /**
  * Saves edited description text
@@ -138,8 +163,8 @@ private onTextUpdate(value){
   // if(this.anItem != null ){
   //   this.anItem.description = value.html;
   // }
-  this.anItem.description = this.editableContent;
-  console.log('description', this.anItem.description);
+  this.anItem.description = value; // or this.textDescription;
+  console.log('description::', this.anItem.description);
   this.itemSvc.updateRequest(this.anItem).subscribe(item => this.reflectItemChangesToView);
 }
 
@@ -167,11 +192,13 @@ private openItem(item:Item, index:number, card:Card):void{
   this.index = index;
   this.itemDlgIsOpen = true;
   this.itemDlgTitle = item.title;
+  this.textDescription = item.description;
   this.anItem = item;
   this.card = card;
   this.setDateDisplay(this.anItem);
   this.fileUploadParam.itemId = item.item_Id;
-  console.log('newDate', item.description);
+  this.GetItemAttachmentsByItemId(item.item_Id);
+  console.log('newDate', item.item_Id);
 }
 
 private  setDateDisplay(i: Item){
@@ -218,8 +245,9 @@ private  setDateDisplay(i: Item){
   * @param boardId
   */
   getCardsByBoardId(boardId:string){
-    this.cardSvc.getCardsByBoardId(boardId).subscribe(cardList => {this.cards = cardList; console.log('cards: ', this.cards)},
-                                      err => this.errorMessage = err);
+    this.cardSvc.getCardsByBoardId(boardId)
+      .subscribe(cardList => {this.cards = cardList},
+                 err => this.errorMessage = err);
 
   }
 
@@ -322,6 +350,7 @@ deleteCard(card_id: string, name: string, i: number){
    */
   toggleEditTitle(i: string){
     this.hideme[i] = !this.hideme[i];
+
   }
 
 }

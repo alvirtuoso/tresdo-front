@@ -9,7 +9,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { TestComponent } from './test/test.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: '', component: HomeComponent }, //, canActivate: [AuthGuard] },
   { path: 'board-form', component: BoardFormComponent },
   { path: 'about', component: AboutComponent },
   { path: 'test', component: TestComponent },

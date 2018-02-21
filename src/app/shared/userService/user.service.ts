@@ -20,7 +20,7 @@ export class UserService extends Repository{
         let options    = new RequestOptions({ headers: headers });
         
         return this.request.post(`${this.apiUrl}/add`, params, options)
-                        .do( res => console.log('user.service.Add() HTTP response:', res.json()))
+                        .do( res => {})
                          .map((res:Response) => res.json())
                          .catch(this.handleError);
 

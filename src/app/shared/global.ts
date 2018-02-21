@@ -3,11 +3,12 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class Global {
 
-     public apiBaseUrl:string = "http://localhost:5000/api";
-     public apiCardUrl:string = "http://localhost:5000/api/card";
-     public apiItemUrl:string = "http://localhost:5000/api/item";
-     public apiBoardUrl:string = "http://localhost:5000/api/board";
-     public apiUserUrl:string = "http://localhost:5000/api/user";
+     public apiBaseUrl:string = "http://localhost:5000";
+     public apiCardUrl:string = `${this.apiBaseUrl}/api/card`;
+     public apiItemUrl:string = `${this.apiBaseUrl}/api/item`;
+     public apiBoardUrl:string = `${this.apiBaseUrl}/api/board`;
+     public apiUserUrl:string = `${this.apiBaseUrl}/api/user`;
+     public apiMediaUrl:string = `${this.apiBaseUrl}/api/mediadata`;
      public dbDefaultDate: string = "0001-01-01T00:00:00";
     // For Debugging /Testing
     public ownerid: string = "d705fa4d-23cc-46ca-8a23-e7257a72bca4"; // Replace with login info

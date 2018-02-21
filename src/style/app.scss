@@ -17,6 +17,7 @@
 
 // End: bootstrap css reference
 
+
 // styles in src/style directory are applied to the whole page
 body {
     background-color: $bg-gradient-2;
@@ -498,7 +499,9 @@ border-color: #eed3d7;
 .callout-info h4 {
     color: #5bc0de;
 }
-
+.text-danger {
+  color: #d9534f;
+}
 // ** End of Callout **/
 
 // ** W3.css custom extentions ** /
@@ -509,3 +512,26 @@ border-color: #eed3d7;
 }
 
 // ** end of w3css custom ** /
+
+// ** drag drop *** /
+.upload-drop-zone {
+  height: 200px;
+  border-width: 2px;
+  margin-bottom: 20px;
+}
+
+/* skin.css Style*/
+.upload-drop-zone {
+  color: #ccc;
+  border-style: dashed;
+  border-color: #ccc;
+  line-height: 200px;
+  text-align: center
+}
+.upload-drop-zone.drop {
+  color: #222;
+  border-color: #222;
+}
+.success-text{
+  color: #468847;
+}

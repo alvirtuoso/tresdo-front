@@ -1,22 +1,38 @@
-<input type="file"
-       ngFileSelect
-       [options]="options"
-       (onUpload)="handleUpload($event)"
-       (beforeUpload)="beforeUpload($event)">
- 
-<!-- drag & drop file example-->
-<!--<style>
-  .file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
-</style> -->
-<div ngFileDrop
-     [options]="options"
-     (onUpload)="handleUpload($event)"
-     [ngClass]="{'file-over': hasBaseDropZoneOver}"
-     (onFileOver)="fileOverBase($event)"
-     (beforeUpload)="beforeUpload($event)"> Drop here
+<div>
+  <input type="file" ngFileSelect [options]="options" (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput" multiple>
 </div>
+<label>Or</label>
+<div class="upload-drop-zone" ngFileDrop [options]="options" (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput" [ngClass]="{ 'is-drop-over': dragOver }">
+  <label>
+      Drag and drop files here
+  </label>
+</div>
+<a class="waves-effect waves-light btn" (click)="startUpload()">
+  Upload
+</a>
+<hr>
+<div class="column is-8 is-offset-2">
+  <div class="upload-items">
+    <div class="upload-item" *ngFor="let f of files; let i = index;">
+      <span class="filename">
+        <div class="chip">
+          {{ f.name }}
+          <i (click)="removeFile(f.id)" class="close material-icons">close</i>
+        </div>
+        <span *ngIf="f.progress?.data?.percentage != 0 && f.progress?.data?.percentage < 100">
+            {{ f.progress?.data?.percentage }} % uploaded
+        </span>
+        <span class="success-text" *ngIf="f.progress?.data?.percentage != 0 && f.progress?.data?.percentage == 100">Success</span>
+      </span>
+      <!-- <span class="determinate" [style.width]="f?.progress?.data?.percentage + '%'"></span> -->
+      <!-- <div class="progress"> Progressive Bar
+        <span class="bar" [style.width]="f?.progress?.data?.percentage + '%'"> </span>
+        {{ f.progress?.data?.speedHuman }} - {{ f.progress?.data?.percentage }}%
+        *ngIf="f.progress?.data?.percentage < 100"
+      </div> -->
+    </div>
+
+  </div>
+</div>
+
  
-<!--<div>
-Image HERE
-<img src={{uploadFile}} width="100" height="100"/>
-</div>-->

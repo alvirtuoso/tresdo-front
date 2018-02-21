@@ -32,8 +32,7 @@ export class NavComponent implements OnInit {
         // User may still have an open logged in session from previously closed browser or so. Save to db if user exists
         this.userSvc.Add(curUser.email, curUser.displayName)
                     .do((usr)=> {window.localStorage.setItem("currentUserId", usr.user_Id)})
-                    .finally(() => this.router.navigate(['/profile', curUser.email]))
-                    .subscribe((usr)=> {console.log('user in nav.component', usr)});
+                    .subscribe((usr)=> {});
       }else
       {
         this.isLoggedIn = false;

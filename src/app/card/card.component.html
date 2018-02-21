@@ -61,48 +61,54 @@
 
             <div class="row">
               <div class="col s12">
-                <label>Description</label>
-                <quill-editor [(ngModel)]="editableContent" debounce [delay]="900" (onTextChange)= onTextUpdate()>
-                  <div quill-editor-toolbar>
-                    <span class="ql-formats">
-                      <button class="ql-bold" [title]="'Bold'"></button>
-                      <button class="ql-italic" [title]="'Italic'"></button>
-                      <button class="ql-underline" [title]="'Underline'"></button>
-                    </span>
 
-                    <span class="gl-formats">
-                      <button class="ql-list" value="ordered"></button>
-                      <button class="ql-list" value="bullet"></button>
-                    </span>
+                <div class="row">
+                    <label>Description</label>
+                    <form class="col s12">
+                      <div class="row">
+                        <div class="input-field col s12">
+                          <textarea debounce [delay]="700" (onKeyupEmit)="onTextUpdate($event)" name="description" id="textAreaDescription" [(ngModel)]="textDescription" class="materialize-textarea"></textarea>
+                        </div>
+                      </div>
+                    </form>
                   </div>
-                </quill-editor>
               </div>
             </div>
             <div class="row" style="margin-top: 80px">
               <label>Attachments</label>
-              
+              <br>
+              <div class="chip" *ngFor="let media of itemAttachments; let i = index; trackBy media?.media_data_Id">
+                  {{media.filename}}
+                  <i class="close material-icons" (click)="removeMediaAttachment(media)">close</i>
+              </div>
+              <!-- *ngFor="let card of cards; let i = index; trackBy card?.card_Id" -->
             </div>
 
           </div>
           <div class="col s4">
             <div class="collection">
-              <a class="collection-item btn-flat" (click)="ArchiveItem()" >Archive</a>
+              <a class="collection-item btn-flat" (click)="ArchiveItem()" >
+                Archive
+              </a>
               <a class="collection-item btn-flat" (click)="toggleDate()">
-                {{btnDate}} <label class="float-right">{{date}}</label>
-                  <my-date-picker style="position:fixed" *ngIf="showDatePicker" [options]="myDatePickerOptions"  (dateChanged)="onDateChanged($event)"></my-date-picker>
+                    <span [style.color]="btnDateText != 'Close' ? '#26a69a' : '#d9534f'">{{btnDateText}}</span>
+
+                <label class="float-right" *ngIf="date != '1/1/1'">{{date}}</label>
+                <my-date-picker style="position:fixed; margin-left:30px" *ngIf="showDatePicker" [options]="myDatePickerOptions"  (dateChanged)="onDateChanged($event)"></my-date-picker>
               </a>
-              <a class="collection-item">Attach Files
-                
+              <a class="collection-item btn-flat" (click)="toggleUpload()">
+                <span [style.color]="uploadText == 'Upload' ? '#26a69a' : '#d9534f'">
+                  {{uploadText}}
+                </span>
               </a>
-              <a class="collection-item btn-flat">
-                <!-- <upload [param]="{itemId: fileUploadParam.itemId}" ></upload> -->
-              </a>
+            </div>
+            <div *ngIf="showUploadInput">{{fileUploadParam.itemId}}
+                <upload [itemId]="fileUploadParam.itemId" ></upload> 
             </div>
           </div>
         </div>
 
       </app-dialog>
-
 
 
 

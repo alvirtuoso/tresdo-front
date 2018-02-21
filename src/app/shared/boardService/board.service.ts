@@ -20,7 +20,7 @@ export class BoardService extends Repository{
         let headers = new Headers({ 'Content-Type': 'application/json' });
 
         return this.request.post(`${this.apiUrl}/create`, board, { headers: headers })
-                        .do( res => console.log('board.service.create() HTTP response:', res))
+                        .do( res => {})
                         .map((res:Response) => res.json())
                         .catch(this.handleError);
     }
@@ -28,7 +28,7 @@ export class BoardService extends Repository{
     // Retrieves all public boards from the DB
     getPublicBoards(): Observable<Board[]>{
          return this.request.get(this.apiUrl + '/public')
-                    .do( res => console.log('board.service.getAll() HTTP response:', res))
+                    .do( res => {})
                     .map((res: Response) => res.json())
                     .catch(this.handleError);
     }
@@ -36,7 +36,7 @@ export class BoardService extends Repository{
     // Retrieves all private boards by owner_id from the DB
     getPrivateBoards(userEmail:String): Observable<Board[]>{
             return this.request.get(`${this.apiUrl}/private/${userEmail}`)
-                    .do( res => console.log('board.service.getAll() HTTP response:', res))
+                    .do( res => { })
                     .map((res: Response) => res.json())
                     .catch(this.handleError);
     }

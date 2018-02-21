@@ -1,6 +1,8 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, JsonpModule } from '@angular/http';
+import {HttpClientModule} from '@angular/common/http'; // new in angular 4
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,7 +20,6 @@ import { routing } from './app.routing';
 
 // Third party modules
 import { MaterializeModule } from 'angular2-materialize';
-// import { ModalModule } from 'angular2-modal';
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 import { ClarityModule } from 'clarity-angular';
@@ -26,11 +27,11 @@ import {DragulaModule, DragulaService} from 'ng2-dragula/ng2-dragula';
 import { AngularFireModule} from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
-import { QuillModule } from 'ngx-quill';
+import { QuillModule } from 'ngx-quill'
 import { MyDatePickerModule } from 'mydatepicker';
-// import { Ng2UploaderModule } from 'ng2-uploader';
-
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
+import { NgUploaderModule } from 'ngx-uploader';
+
 import { NavComponent } from './nav/nav.component';
 import { UserComponent } from './user/user.component';
 import { BoardFormComponent } from './board-form/board-form.component';
@@ -38,8 +39,8 @@ import { CardComponent } from './card/card.component';
 import { BoardComponent } from './board/board.component';
 
 import { Global } from './shared/global';
-import { ItemComponent } from './item/item.component';
-// import { UploadComponent } from './upload/upload.component';
+import { ItemComponent } from './item/item.component'; 
+import { UploadComponent } from './upload/upload.component';
 import { TestComponent } from './test/test.component';
 
 // This projects modules
@@ -49,28 +50,15 @@ import { AuthGuard } from './+auth/auth-guard.service';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { NavigationComponent } from './navigation/navigation.component';
-import { DebounceDirective } from './debounce/debounce.directive';
+import { Debounce } from './debounce/debounce.directive';
 import { environment } from '../environments/environment';
-
-
-// Must export the config
-// export const firebaseConfig = {
-//     apiKey: "AIzaSyD6gNNeGT-BvkbH7q5raokXw4TM-u2DTLs",
-//     authDomain: "someday-735c3.firebaseapp.com",
-//     databaseURL: "https://someday-735c3.firebaseio.com",
-//     storageBucket: "someday-735c3.appspot.com",
-//     messagingSenderId: "723760278825"
-// };
-
-// const firebaseAuthConfig = {
-//   provider: AuthProviders.Password,
-//   method: AuthMethods.Password
-// }
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpModule,
+    HttpClientModule,
+    
     JsonpModule,
     FormsModule,
     BrowserAnimationsModule,
@@ -83,10 +71,10 @@ import { environment } from '../environments/environment';
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     DragulaModule,
+    NgUploaderModule,
     QuillModule,
     MyDatePickerModule,
     AuthModule,
-    // Ng2UploaderModule,
     routing
   ],
   declarations: [
@@ -104,8 +92,8 @@ import { environment } from '../environments/environment';
     UserProfileComponent,
     DialogComponent,
     NavigationComponent,
-    DebounceDirective,
-    // UploadComponent,
+    Debounce,
+    UploadComponent,
     TestComponent
 ],
   providers: [

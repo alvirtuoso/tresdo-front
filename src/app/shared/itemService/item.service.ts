@@ -3,17 +3,22 @@ import {Injectable} from '@angular/core';
 import {Item} from '../../model/item';
 import { Global } from '../../shared/global';
 import { Repository } from '../../model/repository';
+import { Media_Data } from '../../model/media_data';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
+
+// New in since angular4
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class ItemService extends Repository{
 
-constructor(private request: Http, private global: Global) {
+constructor(private request: Http, private reqClient: HttpClient, private global: Global) {
     super(request);
  }
 
     items:Item[] = [];
     apiUrl = this.global.apiItemUrl;// 'http://localhost:5000/api/item';
+    apiMediaUrl = this.global.apiMediaUrl;
     create(item: Item): Observable<Item>{
         // let bodyString = JSON.stringify(item);
         let headers    = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
@@ -30,6 +35,23 @@ constructor(private request: Http, private global: Global) {
                     .do( res => console.log('item.service.getAll() HTTP response:', res))
                     .map((res: Response) => res.json())
                     .catch(this.handleError);
+    }
+
+    getAttachmentsMediaByItemId(itemId: string): Observable<Media_Data[]>{
+        console.log('getAttachmentsMediaByItemId start:', `${this.apiMediaUrl}/${itemId}`)
+        return this.request.get(`${this.apiMediaUrl}/${itemId}`)
+        .do( res => console.log('getAttachmentsMediaByItemId response:', res))
+        .map((res: Response) => res.json())
+        .catch(this.handleError);
+    }
+
+    removeMediaAttachment(media_data: Media_Data):void{
+        console.log('itemSvc removeMediaAttachment:', media_data);
+        let apiUrl = `${this.global.apiMediaUrl}/deletemedia/${media_data.item_media_data_id}`;
+        this.request.delete(apiUrl)
+            .do(res => console.log('itemSvc removeMediaAttachment:', apiUrl))
+            .catch(this.handleError)
+            .subscribe(res => console.log(res));
     }
 
   // Find an Item by its Id
@@ -59,14 +81,22 @@ constructor(private request: Http, private global: Global) {
                     .map((res: Response) => res)
                     .catch(this.handleError);
     }
+    
     updateItemIdInMedia(item_id: string, media_id: string){
-               let headers    = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+
+        let headers    = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
         let options    = new RequestOptions({ headers: headers });
         let params = "item_id=" + item_id + "&media_id=" + media_id;
-        return this.request.put(`${this.apiUrl}/updateItemId/`, params, options)
-                    .do(res => console.log('ItemSvc.updateItemIdInMedia: ', res))
-                    .map((res: Response) => res)
-                    .catch(this.handleError);
+        
+        return this.request.post(`${this.apiMediaUrl}/updateItemId`, params, options)
+                    .do(res => console.log('do ItemSvc.updateItemIdInMedia: ', res))
+                    .subscribe((res: Response) => {
+                         res 
+                        }, err => {
+                            console.log('Err updateItemIdInMedia: ', err)
+                        }
+                    );
+               
     }
 
     createItemForCard(item: Item): Observable<Item[]>{
@@ -83,9 +113,9 @@ constructor(private request: Http, private global: Global) {
     archiveItem(item_id: string){
         let apiUrl = `${this.global.apiItemUrl}/archive/${item_id}`;
         this.request.delete(apiUrl)
-        .do(res => console.log('itemSvc archiveItem:', apiUrl))
-        .catch(this.handleError)
-        .subscribe(res => console.log(res));
+            .do(res => console.log('itemSvc archiveItem:', apiUrl))
+            .catch(this.handleError)
+            .subscribe(res => console.log(res));
     }
 
 }

@@ -97,7 +97,9 @@ text1: string = '<div>Hello World!</div><div>PrimeNG <b>Editor</b> Rocks</div><d
 myfunction(val:string){
   console.log('myfunc', val);
 }
-
+log(val){
+  console.log('hellooooo', val);
+}
   //   onContentChanged({ quill, html, text }) {
   //   console.log(quill, html, text);
   // }

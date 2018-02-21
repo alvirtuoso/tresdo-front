@@ -21,7 +21,7 @@ export class BoardComponent implements OnInit {
   ngOnInit() {
     // pass this.id to card.component's boardId input directive. Load the cards in the card.component
       this.observe = this.route.params
-                    .do(params => console.log('board.component board id params', params))
+                    .do(params => {})
                      .subscribe(params => {this.id = params['id']});  // (+) converts string 'id' to a number
    }
 
