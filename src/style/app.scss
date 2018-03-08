@@ -518,6 +518,7 @@ border-color: #eed3d7;
   height: 200px;
   border-width: 2px;
   margin-bottom: 20px;
+
 }
 
 /* skin.css Style*/
@@ -526,11 +527,17 @@ border-color: #eed3d7;
   border-style: dashed;
   border-color: #ccc;
   line-height: 200px;
-  text-align: center
+  text-align: center;
+  &:hover{
+    border: solid 3px rgb(146, 211, 155);
+  }
 }
 .upload-drop-zone.drop {
   color: #222;
   border-color: #222;
+}
+.file-over {
+  border: dotted 3px rgb(146, 211, 155);
 }
 .success-text{
   color: #468847;

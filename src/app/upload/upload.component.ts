@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, Input } from '@angular/core';
 import { Global } from '../shared/global';
 import { ItemService } from '../shared/itemService/item.service';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions } from 'ngx-uploader';
+import { toast } from 'angular2-materialize';
 
 @Component({
   selector: 'upload',
@@ -19,6 +20,7 @@ export class UploadComponent implements OnInit {
   @Input() itemId:string;
 
   constructor(private global: Global, private itemSvc: ItemService) { 
+     // Set file types in options. 
     // this.options = { concurrency: 0, allowedContentTypes: ['image/jpeg', 'image/png', 'image/gif'] };
     this.files = []; // local uploading files array
     this.uploadInput = new EventEmitter<UploadInput>(); // input events, we use this to emit data to ngx-uploader
@@ -28,7 +30,6 @@ export class UploadComponent implements OnInit {
   ngOnInit() {
     this.removeAllFiles();
   }
-//`${this.global.apiItemUrl}/upload`
  
   sizeLimit = 5000000; // 5mb limit
   showFile: any;
@@ -46,7 +47,11 @@ export class UploadComponent implements OnInit {
       // this.uploadInput.emit(event);
     } else if (output.type === 'addedToQueue'  && typeof output.file !== 'undefined') { // add file to array when added
       this.files.push(output.file);
-
+      let total = this.getTotalSize();
+      console.log(output.file.size);
+      if (total > this.sizeLimit){
+        toast(`Total size of ${total} has exceeded the upload limit of ${this.sizeLimit}`, 4000, 'alert-danger');
+      }
     } else if (output.type === 'uploading' && typeof output.file !== 'undefined') {
       // update current data in files array for uploading file
       const index = this.files.findIndex(file => typeof output.file !== 'undefined' && file.id === output.file.id);
@@ -63,9 +68,8 @@ export class UploadComponent implements OnInit {
     }else if(output.type == 'done'){
       this.showFile = output.file.nativeFile;
       let newMediaId = output.file.response;
-      console.log('output: ', output.file.response);
+      console.log('output', output.file.size)
       if(newMediaId){
-        console.log('next on output mediaId', newMediaId);
         this.itemSvc.updateItemIdInMedia(this.itemId, newMediaId);
       }
     //  this.mediaIds.push(output.file.response);
@@ -82,6 +86,13 @@ export class UploadComponent implements OnInit {
     this.uploadInput.emit(event);
   }
 
+  getTotalSize(): number {
+    let total = 0;
+    this.files.forEach(file => {
+      total += file.size;
+    });
+    return total;
+  }
   cancelUpload(id: string): void {
     this.uploadInput.emit({ type: 'cancel', id: id });
   }

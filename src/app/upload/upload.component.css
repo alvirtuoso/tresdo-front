@@ -1,5 +1,5 @@
 .file-over {
-     border: dotted 3px darkgray;
+     border: dotted 3px rgb(146, 211, 155);
 } /* Default class applied to drop zones on over */
 
 .fileUpload {

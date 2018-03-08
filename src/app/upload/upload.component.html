@@ -16,7 +16,7 @@
     <div class="upload-item" *ngFor="let f of files; let i = index;">
       <span class="filename">
         <div class="chip">
-          {{ f.name }}
+          {{ f.name }} {{ f.size }}
           <i (click)="removeFile(f.id)" class="close material-icons">close</i>
         </div>
         <span *ngIf="f.progress?.data?.percentage != 0 && f.progress?.data?.percentage < 100">
