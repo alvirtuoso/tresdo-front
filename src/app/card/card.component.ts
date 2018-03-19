@@ -1,4 +1,5 @@
 import { Component, OnInit, OnChanges, AfterViewInit, ViewContainerRef, Renderer, ViewChild, ElementRef, Input, EventEmitter } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { Card } from '../model/card';
 import { CardService } from '../shared/cardService/card.service';
 import { ItemService } from '../shared/itemService/item.service';
@@ -8,14 +9,17 @@ import { Overlay } from 'ngx-modialog';
 import { Modal } from 'ngx-modialog/plugins/bootstrap';
 // import { Overlay } from 'angular2-modal';
 // import { Modal } from 'angular2-modal/plugins/bootstrap';
-import { dragula, DragulaService } from 'ng2-dragula/ng2-dragula';
+
 import {IMyOptions, IMyDateModel} from 'mydatepicker';
 import { Media_Data } from '../model/media_data';
+import * as FileSaver from 'file-saver';
+// import { Repository } from '../model/repository';
 
 @Component({
   selector: 'card',
   templateUrl: './card.component.html'
   // styleUrls: ['./card.component.css']
+
 })
 export class CardComponent implements OnInit, AfterViewInit {
 @Input() boardId:string;
@@ -44,27 +48,46 @@ itemDlgTitle = '';
 editableContent: string;
 showEditor: boolean = false;
 fileUploadParam:{itemId:string} = {itemId: ""};
+fileUrl: SafeResourceUrl;
 
-  constructor(private dragulaService: DragulaService, vcRef: ViewContainerRef, public modal: Modal, private renderer: Renderer, private cardSvc: CardService, private itemSvc: ItemService, private global: Global)
+  constructor(
+    vcRef: ViewContainerRef, 
+    public modal: Modal, 
+    private renderer: Renderer, 
+    private cardSvc: CardService, 
+    private itemSvc: ItemService, 
+    private global: Global,
+    private sanitizer: DomSanitizer)
   {
     // overlay.defaultViewContainer = vcRef;
 
-    const bag: any = this.dragulaService.find('bagOne');
-    if (bag !== undefined ) this.dragulaService.destroy('bagOne');
-    this.dragulaService.setOptions('bagOne', { revertOnSpill: true });
-    dragulaService.drop.subscribe((value) => {
-      this.onDrop(value.slice(1));
-    });
+    // const bag: any = this.dragulaService.find('bagOne');
+    // if (bag !== undefined ) this.dragulaService.destroy('bagOne');
+    // this.dragulaService.setOptions('bagOne', { revertOnSpill: true });
+    // dragulaService.drop.subscribe((value) => {
+    //   // this.onDrop(value.slice(1));
+    // });
 
   }
 
 private GetItemAttachmentsByItemId(item_Id: string): void{
-  console.log('GetItemAttachmentsByItemId start', item_Id);
   this.itemSvc.getAttachmentsMediaByItemId(item_Id).subscribe(
-    attachments => { this.itemAttachments = attachments },
-    err => { this.errorMessage = <any>err }
+    attachments => { 
+      this.itemAttachments = attachments; 
+    },
+    err => { this.itemSvc.handleErrorMsg(err.toString()) }
   );
 }
+
+private downloadFile(filename:string, file_ext:string, mediaId:string){
+  this.itemSvc.getAttachmentBlob(mediaId, file_ext).subscribe( fileData => {
+
+     let blob = new Blob([fileData], { type: this.global.dictionary[file_ext] }); // file_ext must match the Accept type in the http request header
+
+    FileSaver.saveAs(fileData, filename);
+  })
+}
+
 private removeMediaAttachment(item_Media_Data_Id:string): void{
   this.itemSvc.removeMediaAttachment(item_Media_Data_Id);
 }
@@ -198,7 +221,6 @@ private openItem(item:Item, index:number, card:Card):void{
   this.setDateDisplay(this.anItem);
   this.fileUploadParam.itemId = item.item_Id;
   this.GetItemAttachmentsByItemId(item.item_Id);
-  console.log('newDate', item.item_Id);
 }
 
 private  setDateDisplay(i: Item){
@@ -216,20 +238,56 @@ private  setDateDisplay(i: Item){
    }
 }
 
-/**
- * Handles drag drop of an item in a card. Only saves the dropping of an item into different card. Saving the item's index order is done in item.component
- * @param args
- */
-  onDrop(args) {
-    let [el, target, source, sibling] = args;
-    let targetCardId = target.title;
-    let itemId = el.id;
-    console.log('target: ', target.title + ' src: ' + source.title);
-    // Update only when dropping into different card
-    if(target.title != source.title){
-      this.itemSvc.updateItemCardId(itemId, targetCardId).subscribe();
+// /**
+//  * Handles drag drop of an item in a card. Only saves the dropping of an item into different card. Saving the item's index order is done in item.component
+//  * @param args
+//  */
+//   onDrop(args) {
+//     let [el, target, source, sibling] = args;
+//     let targetCardId = target.title;
+//     let itemId = el.id;
+//     console.log('target: ', target.title + ' src: ' + source.title);
+//     // Update only when dropping into different card
+//     if(target.title != source.title){
+//       this.itemSvc.updateItemCardId(itemId, targetCardId).subscribe();
+//     }
+//   }
+
+targetCard:Card;
+SrcCard:Card;
+
+private releaseDrop(event, cardSrc:Card){
+  this.SrcCard = cardSrc;
+  let item:Item = event;
+
+  let index = cardSrc.items.indexOf(event);
+  // Check if not dropping onto the same card
+  if(this.targetCard.card_Id != this.SrcCard.card_Id){
+    this.itemSvc.updateItemCardId(item.item_Id, this.targetCard.card_Id).subscribe();
+    if (index >= 0){
+      cardSrc.items.splice(index,1); // remove the item to drop
     }
+  }else{
+    // Dropping onto the same card so Update the sort order.
+    if(index != item.sort_Order)
+      this.itemSvc.updateRequest(item).subscribe();
   }
+}
+
+private addDropItem(event, cardTarget:Card){
+  let item:Item = event;
+  let itemExists = false;
+  this.targetCard = cardTarget;
+
+  for(var i = 0; i < cardTarget.items.length; i++){
+    itemExists = cardTarget.items[i].item_Id == item.item_Id;
+    if(itemExists) break;
+  }
+  if(!itemExists){
+    cardTarget.items.push(event); // add the dragged item
+  }
+
+}
 
 /**
  * Retrieves all cards
@@ -286,11 +344,11 @@ deleteCard(card_id: string, name: string, i: number){
 
   var deleteByIdUrl = `${this.global.apiCardUrl}/delete/${card_id}`;
   const dialogRef = this.modal.confirm()
-        .size('lg')
+        .size('sm')
         .title('Confirm Deletion')
-        .showClose(true)
+        .showClose(false)
         .body(`
-           <h2>"${name}"</h2>
+           <h4>"${name}"</h4>
         `)
         .okBtn('Delete')
         .cancelBtn('Cancel')
@@ -313,8 +371,10 @@ deleteCard(card_id: string, name: string, i: number){
     this.anItem = <Item>{title: form.value["title"], description: "", card_Id: form.value["card_Id"], owner_Id: "d705fa4d-23cc-46ca-8a23-e7257a72bca4", modified_By_Id: "d705fa4d-23cc-46ca-8a23-e7257a72bca4", status_Id: 1};
    // create item. List of items for card is returned .
     this.itemSvc.createItemForCard(this.anItem)
+                                .do(data => { console.log('createItem OnSubmit:', data);
+                                })
                                  .map(data => this.items = data)
-                                 .subscribe(data => {card.items.push(data[data.length - 1])},   // add the new item to card's items
+                                 .subscribe(data => {card.items.push(data); console.log('items:', card.items)},   // add the new item to card's items
                                  err => this.errorMessage = <any>err);
 
     // close the form

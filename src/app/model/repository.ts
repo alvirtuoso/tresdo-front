@@ -27,4 +27,11 @@ export class Repository {
      return Observable.throw(error);
   }
 
+  handleErrorMsg(error: String) {
+    if(error){
+      toast(error, 4000, 'alert-danger');
+    }
+
+ }
+
 }

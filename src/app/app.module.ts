@@ -23,7 +23,7 @@ import { MaterializeModule } from 'angular2-materialize';
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 import { ClarityModule } from 'clarity-angular';
-import {DragulaModule, DragulaService} from 'ng2-dragula/ng2-dragula';
+import { DragDropDirectiveModule} from "angular4-drag-drop";
 import { AngularFireModule} from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
@@ -70,7 +70,7 @@ import { environment } from '../environments/environment';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    DragulaModule,
+    DragDropDirectiveModule,
     NgUploaderModule,
     QuillModule,
     MyDatePickerModule,
@@ -102,7 +102,6 @@ import { environment } from '../environments/environment';
     BoardService,
     CardService,
     ItemService,
-    DragulaService,
     HttpModule,
     AuthService,
     AuthGuard,

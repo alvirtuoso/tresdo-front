@@ -1,7 +1,8 @@
-<div *ngIf="errorMessage">Error:: {{errorMessage}}</div>
+<!-- <div *ngIf="errorMessage">Error:: {{errorMessage}}</div> -->
 
 <div class="cards" *ngIf="cards.length > 0">
-      <div class="am-card" *ngFor="let card of cards; let i = index; trackBy card?.card_Id">
+      <div dropDirective (dropEvent)="addDropItem($event, card)" class="am-card droppable" [dropHighlight]="'highlight'"
+           *ngFor="let card of cards; let i = index; trackBy card?.card_Id">
           <div class="card-header" *ngIf="!hideme[card.card_Id]">
             <span (click)="toggleEditTitle(card.card_Id)">{{card.name}}</span>
 
@@ -27,7 +28,9 @@
 
              <input type="hidden" #cardid [value]="card.card_Id" >
           </div>
-        <div [attr.title]="card.card_Id" class="items"[dragula]="bagOne" [dragulaModel]='card.items'>
+
+        <!-- <div [attr.title]="card.card_Id" class="items"[dragula]="bagOne" [dragulaModel]='card.items'> -->
+        <div>
           <div class="item-form" *ngIf="hideme[card.sort_Order]">
             <form (ngSubmit)="onSubmit(itemForm, card)" #itemForm="ngForm">
               <input name="title" id="title" type="text" ngModel required>
@@ -38,11 +41,10 @@
             </form>
           </div>
 
-          <div (click)="openItem(item, i, card)" [attr.id]="item.item_Id" [attr.title]="i" class="card-item" *ngFor="let item of card.items; let i = index; trackBy item?.item_Id">
-
-              <!--{{item.title}} {{i}} so: {{item.sort_Order}} <i class="material-icons right">more_vert</i>-->
+            <div [dragDirective]='item' [dragHightlight]="'highlight'" (releaseDrop)="releaseDrop($event, card)" class="dragItem"
+                 (click)="openItem(item, i, card)" [attr.id]="item.item_Id" [attr.title]="i" class="card-item" *ngFor="let item of card.items; let i = index; trackBy item?.item_Id">
               <item [item]="item" [index]="i"></item>
-          </div>
+            </div>
 
         </div>
 
@@ -77,11 +79,12 @@
             <div class="row" style="margin-top: 80px">
               <label>Attachments</label>
               <br>
-              <div class="chip" *ngFor="let media of itemAttachments; let i = index; trackBy media?.media_data_Id">
-                  {{media.filename}}
+              <div class="chip" *ngFor="let media of itemAttachments; let i = index; trackBy media?.media_Data_Id">
+                 <a class="hover-pointer" (click)="downloadFile(media.filename, media.file_Extension, media.media_Data_Id)">
+                    {{media.filename}}
+                 </a> 
                   <i class="close material-icons" (click)="removeMediaAttachment(media.item_Media_Data_Id)">close</i>
               </div>
-              <!-- *ngFor="let card of cards; let i = index; trackBy card?.card_Id" -->
             </div>
 
           </div>

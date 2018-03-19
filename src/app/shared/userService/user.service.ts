@@ -8,7 +8,7 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 @Injectable()
 export class UserService extends Repository{
 
-    apiUrl = 'http://localhost:5000/api/user';
+    apiUrl = this.global.apiUserUrl;// 'http://localhost:5000/api/user';
     constructor(private request: Http, private global:Global) {
 
         super(request);

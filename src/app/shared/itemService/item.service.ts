@@ -4,15 +4,18 @@ import {Item} from '../../model/item';
 import { Global } from '../../shared/global';
 import { Repository } from '../../model/repository';
 import { Media_Data } from '../../model/media_data';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Http, Response, Headers, RequestOptions, ResponseContentType } from '@angular/http';
 
 // New in since angular4
 import { HttpClient } from '@angular/common/http';
+import { Options } from "selenium-webdriver/opera";
+import {DomSanitizer} from '@angular/platform-browser';
+import { ResponseType } from "@angular/http/src/enums";
 
 @Injectable()
 export class ItemService extends Repository{
 
-constructor(private request: Http, private reqClient: HttpClient, private global: Global) {
+constructor(private request: Http, private reqClient: HttpClient, private sanitizer: DomSanitizer, private global: Global) {
     super(request);
  }
 
@@ -38,16 +41,25 @@ constructor(private request: Http, private reqClient: HttpClient, private global
     }
 
     getAttachmentsMediaByItemId(itemId: string): Observable<Media_Data[]>{
-        console.log('getAttachmentsMediaByItemId start:', `${this.apiMediaUrl}/${itemId}`)
+        // console.log('getAttachmentsMediaByItemId start:', `${this.apiMediaUrl}/${itemId}`)
         return this.request.get(`${this.apiMediaUrl}/${itemId}`)
         .do( res => { }) //--> todo: do some logging
         .map((res: Response) => res.json())
         .catch(this.handleError);
     }
 
+    getAttachmentBlob(mediaDataId: string, fileExt: string): Observable<any>{
+            return this.request.get(`${this.apiMediaUrl}/blob/${mediaDataId}/${fileExt}`, {responseType: ResponseContentType.Blob})
+                .do(res => {}) //--> todo: do some logging
+                .map(res => {
+                    return new Blob([res.blob()], { type: this.global.dictionary[fileExt] })
+                })
+                .catch(this.handleError);
+    }
+
     removeMediaAttachment(item_Media_Data_Id: string):void{
         let apiUrl = `${this.global.apiMediaUrl}/deletemedia/${item_Media_Data_Id}`;
-        console.log('itemSvc removeMediaAttachment item_Media_Data_Id:', item_Media_Data_Id);
+
         this.request.delete(apiUrl)
             .do(res => {}) //--> todo: do some logging
             .catch(this.handleError)
@@ -103,7 +115,6 @@ constructor(private request: Http, private reqClient: HttpClient, private global
         let headers    = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
         let options    = new RequestOptions({ headers: headers });
         console.log("createItemForCard item", item);
-        console.log("createItemForCard url", this.apiUrl);
         return this.request.post(`${this.apiUrl}/createforcard`, item, options)
                         .do( res => console.log('item.service.createItemForCard() HTTP response:', res))
                          .map((res:Response) => res.json())

@@ -11,7 +11,40 @@ import { Global } from '../shared/global';
 @Component({
   selector: 'my-about',
   templateUrl: './about.component.html',
-  styleUrls: ['./about.component.scss']
+  styleUrls: ['./about.component.scss'],
+  styles: [
+    `
+    [mwlDraggable] {
+      background-color: red;
+      width: 200px;
+      height: 200px;
+      position: relative;
+      z-index: 1;
+      float: left;
+      margin-right: 10px;
+    }
+    [mwlDroppable] {
+      background-color: green;
+      width: 400px;
+      height: 400px;
+      position: relative;
+      top: 50px;
+      left: 100px;
+    }
+    [mwlDraggable],
+    [mwlDroppable] {
+      color: white;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dropOverActive {
+      border: dashed 1px black;
+      background-color: lightgreen;
+    }
+  `
+  ]
 })
 export class AboutComponent implements OnInit {
 
@@ -100,6 +133,8 @@ myfunction(val:string){
 log(val){
   console.log('hellooooo', val);
 }
+
+
   //   onContentChanged({ quill, html, text }) {
   //   console.log(quill, html, text);
   // }
