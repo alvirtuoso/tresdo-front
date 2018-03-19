@@ -147,17 +147,14 @@ private removeMediaAttachment(item_Media_Data_Id:string): void{
   // Edits a Card's name
   private onEnter(value: any) {
     this.card = new Card();
-    // this.card.name = <string>value.namebox;
-    // this.card.card_id = value.cardid;
+  
     this.card.name = <string>value.namebox;
     this.card.card_Id = <string>value.cardid;
     this.card.active = true;
-    this.card.owner_Id = window.localStorage.getItem('currentUserId'); //todo: Replace when login code is done
+    this.card.owner_Id = window.localStorage.getItem('currentUserId'); 
     this.card.board_Id = this.boardId;
 
     // Call card edit service
-    // this.getCardsByBoardId(this.boardId);
-
     this.cardSvc.updateRequest(this.card);
 
 }
@@ -368,7 +365,8 @@ deleteCard(card_id: string, name: string, i: number){
    */
   onSubmit(form:any, card:Card):void{
     event.preventDefault;
-    this.anItem = <Item>{title: form.value["title"], description: "", card_Id: form.value["card_Id"], owner_Id: "d705fa4d-23cc-46ca-8a23-e7257a72bca4", modified_By_Id: "d705fa4d-23cc-46ca-8a23-e7257a72bca4", status_Id: 1};
+    let ownerID = window.localStorage.getItem('currentUserId');
+    this.anItem = <Item>{title: form.value["title"], description: "", card_Id: form.value["card_Id"], owner_Id: ownerID, modified_By_Id: ownerID, status_Id: 1};
    // create item. List of items for card is returned .
     this.itemSvc.createItemForCard(this.anItem)
                                 .do(data => { console.log('createItem OnSubmit:', data);
