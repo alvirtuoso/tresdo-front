@@ -3,6 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, JsonpModule } from '@angular/http';
 import {HttpClientModule} from '@angular/common/http'; // new in angular 4
 
+import { StoreModule } from '@ngrx/store';
+import { board } from './reducers/board.reducer';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -58,7 +61,10 @@ import { environment } from '../environments/environment';
     BrowserModule,
     HttpModule,
     HttpClientModule,
-    
+    StoreModule.forRoot({ 
+     board
+    }),
+
     JsonpModule,
     FormsModule,
     BrowserAnimationsModule,

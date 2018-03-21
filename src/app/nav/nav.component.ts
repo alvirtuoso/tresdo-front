@@ -4,6 +4,10 @@ import { BoardService } from '../shared/boardService/board.service';
 import { UserService } from '../shared/userService/user.service';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+// import * as BoardActions from '../actions/board.action';
+import { AppStore } from '../app.store';
 
 @Component({
   selector: 'nav-menu',
@@ -14,12 +18,17 @@ export class NavComponent implements OnInit {
 
   showNewBoard: { isOn: boolean; } = { isOn: false };
   boards: Board[] = [];
+  newBoard: Observable<Board>;
   isLoggedIn: Boolean = true;
   titleHeader: String  = "Create Board";
   curUserEmail: String;
-  constructor(private userSvc:UserService, private boardSvc: BoardService, private af: AngularFireAuth, private router: Router) { }
+  constructor(private store: Store<AppStore>, private userSvc:UserService, private boardSvc: BoardService, private af: AngularFireAuth, private router: Router) {
+    this.newBoard = this.store.select('board');
+
+   }
 
   ngOnInit() {
+    console.log('herefrom nav.component Init');
     // Check user auth state
     this.af.auth.onAuthStateChanged(curUser => {
       if(curUser){
@@ -43,6 +52,17 @@ export class NavComponent implements OnInit {
     });
   }
 
+  // Event when user mouse over the boards dropdown list.
+  onMouseEnter(){
+    // Listen or subscribe to when a new board is created
+    this.newBoard.subscribe((boardData) => {
+      if(boardData && !this.boards.includes(boardData)){
+        this.boards.push(boardData);
+      }
+        
+    })
+  }
+  // Open and close new board form.
   toggleNewBoard(){
     this.showNewBoard.isOn = !this.showNewBoard.isOn;
   }

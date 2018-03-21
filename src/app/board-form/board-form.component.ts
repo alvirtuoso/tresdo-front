@@ -1,8 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router }       from '@angular/router';
 import { Board } from '../model/board';
 import { BoardService } from '../shared/boardService/board.service';
 import { Global } from '../shared/global';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import * as BoardActions from '../actions/board.action';
+import { AppStore } from '../app.store';
+
 @Component({
   selector: 'board-form',
   templateUrl: './board-form.component.html'
@@ -10,14 +15,17 @@ import { Global } from '../shared/global';
 export class BoardFormComponent implements OnInit {
   @Input() showCreateBoard;
   @Input() newTitle: string;
+  @Output() boardCreated: boolean;
 
+  newBoard: Observable<Board>;
   board = new Board();
   errorMessage: string;
   hasError:boolean = false;
   isPublic = true;
 
-  constructor(private router: Router, private boardSvc: BoardService, private global: Global) {
+  constructor(private store: Store<AppStore>, private router: Router, private boardSvc: BoardService, private global: Global) {
     this.newTitle = "New Board";
+    this.newBoard = this.store.select('board');
    }
 
   ngOnInit() {
@@ -47,7 +55,11 @@ closeForm(){
     };
 
     this.boardSvc.create(this.board)
-      .subscribe((data) => {this.board = data; this.router.navigate(['/board', this.board.board_Id])}, err => this.errorMessage = <any>err);
+      .subscribe((data) => {
+        this.store.dispatch(new BoardActions.AddBoard(data));
+        
+        this.board = data; this.router.navigate(['/board', this.board.board_Id])
+      }, err => this.errorMessage = <any>err);
 
       if(typeof this.errorMessage !='undefined' && this.errorMessage){
         this.hasError = true;
@@ -56,6 +68,7 @@ closeForm(){
         this.hasError = false;
         this.errorMessage = '';
       }
+      this.newBoard.subscribe(b => console.log('newboardstore', b));
       // Close the form
      this.closeBoard();
 

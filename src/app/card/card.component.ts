@@ -49,6 +49,7 @@ editableContent: string;
 showEditor: boolean = false;
 fileUploadParam:{itemId:string} = {itemId: ""};
 fileUrl: SafeResourceUrl;
+media: any;
 
   constructor(
     vcRef: ViewContainerRef, 
@@ -123,7 +124,7 @@ private removeMediaAttachment(item_Media_Data_Id:string): void{
   /**
    * Opens and closes the date picker
    */
-  private toggleDate(){
+  public toggleDate(){
     if(this.btnDateText == 'Close'){
       this.btnDateText = 'Due Date';
     }
@@ -133,7 +134,7 @@ private removeMediaAttachment(item_Media_Data_Id:string): void{
     this.showDatePicker = !this.showDatePicker;
   }
 
-  private toggleUpload(){
+  public toggleUpload(){
     if(this.uploadText == 'Upload'){
       this.uploadText = 'Close';
     }
@@ -179,7 +180,7 @@ private removeMediaAttachment(item_Media_Data_Id:string): void{
  * Saves edited description text
  * @param value Event data when content was changed
  */
-private onTextUpdate(value){
+public onTextUpdate(value){
   // if(this.anItem != null ){
   //   this.anItem.description = value.html;
   // }
@@ -323,7 +324,7 @@ private addDropItem(event, cardTarget:Card){
 /**
  * Archives an item to the database.
  */
-private ArchiveItem(): void{
+public ArchiveItem(): void{
   // The this.anItem is set at openItem() when modal dialog opens.
   this.itemSvc.archiveItem(this.anItem.item_Id);
   this.itemDlgIsOpen = false;

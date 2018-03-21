@@ -11,7 +11,7 @@
               <i class="material-icons" (click)="hideme[card.sort_Order] = !hideme[card.sort_Order]">add</i>
               <ul [attr.id]="card.card_Id" class="dropdown-content">
                 <li><span (click)="deleteCard(card.card_Id, card.name, i)">Delete</span></li>
-                <li><span>Edit</span></li>
+                <li><span (click)="toggleEditTitle(card.card_Id)">Edit</span></li>
               </ul>
               <a materialize="dropdown" [materializeParams]="[{hover: true}]" class="dropdown-button" [attr.data-activates]="card.card_Id"><i class="material-icons">arrow_drop_down</i></a>
 

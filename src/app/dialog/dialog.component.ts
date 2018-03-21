@@ -21,7 +21,7 @@ export class DialogComponent implements OnInit {
   @Input() visible: boolean;
   @Input() newTitle: string = "New";
   @Input() subTitle: string;
-  @Input() width_size: string = '90%';
+  @Input() width_size: string = '50%';
   @Input() height_size: string;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 

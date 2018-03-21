@@ -11,6 +11,7 @@ import * as firebase from 'firebase/app';;
 export class ResetPassComponent implements OnInit {
   public auth: any;
   public message: any;
+  passsword:string;
   constructor(private af: AngularFireAuth) {
     this.auth = af.auth;
     console.log(this.auth);

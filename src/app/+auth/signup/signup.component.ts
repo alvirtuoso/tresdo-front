@@ -14,6 +14,8 @@ export class SignupComponent {
 
   constructor(private af: AngularFireAuth, private userService: UserService, private router: Router) {  }
 
+  email:string;
+  password:string;
   message = '';
   onSubmit(formData) {
     if(formData.valid) {
