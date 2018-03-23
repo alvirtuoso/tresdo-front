@@ -56,11 +56,24 @@ export class NavComponent implements OnInit {
   onMouseEnter(){
     // Listen or subscribe to when a new board is created
     this.newBoard.subscribe((boardData) => {
-      if(boardData && !this.boards.includes(boardData)){
+      console.log('onmouseenter', this.boards);
+      if(boardData && !this.isExistingBoard(boardData)){
         this.boards.push(boardData);
       }
         
     })
+  }
+
+  isExistingBoard(board: Board){
+    if(board){
+      for (let index = 0; index < this.boards.length; index++) {
+        const b = this.boards[index];
+        if (b.board_Id === board.board_Id) {
+          return true;
+        }
+    }
+     }
+     return false;
   }
   // Open and close new board form.
   toggleNewBoard(){

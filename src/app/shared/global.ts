@@ -15,7 +15,7 @@ export class Global {
     // end Debugging /Tesing
     
     public publicClassificationId: string = "faad67d2-7ec6-494e-a4ef-ac126481f77f";
-    public teamClassificationId: string = "30c968cb-5686-444d-b138-21d90d15f1ca;"
+    public teamClassificationId: string = "30c968cb-5686-444d-b138-21d90d15f1ca";
     static newGuid() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);

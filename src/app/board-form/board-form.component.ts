@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router }       from '@angular/router';
 import { Board } from '../model/board';
 import { BoardService } from '../shared/boardService/board.service';
@@ -15,7 +15,6 @@ import { AppStore } from '../app.store';
 export class BoardFormComponent implements OnInit {
   @Input() showCreateBoard;
   @Input() newTitle: string;
-  @Output() boardCreated: boolean;
 
   newBoard: Observable<Board>;
   board = new Board();
@@ -42,8 +41,10 @@ closeForm(){
 }
 // Save new board from the form.
   onSubmit(form:any):void{
+    this.isPublic = form.value["classification_id"];
     var classId = this.isPublic ? this.global.publicClassificationId : this.global.teamClassificationId;
-    console.log('board-form onSubmit', form)
+console.log('form classid', form.value["classification_id"]);
+console.log('classId', classId);
     //  cast to Board object
     this.board = <Board>{
        board_Id: null
@@ -58,7 +59,8 @@ closeForm(){
       .subscribe((data) => {
         this.store.dispatch(new BoardActions.AddBoard(data));
         
-        this.board = data; this.router.navigate(['/board', this.board.board_Id])
+        this.board = data; 
+        this.router.navigate(['/board', this.board.board_Id])
       }, err => this.errorMessage = <any>err);
 
       if(typeof this.errorMessage !='undefined' && this.errorMessage){
@@ -67,8 +69,9 @@ closeForm(){
       }else{
         this.hasError = false;
         this.errorMessage = '';
+        
       }
-      this.newBoard.subscribe(b => console.log('newboardstore', b));
+
       // Close the form
      this.closeBoard();
 

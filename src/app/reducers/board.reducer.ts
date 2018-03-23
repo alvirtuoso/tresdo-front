@@ -4,7 +4,7 @@ import { Board } from '../model/board';
 
 export type Action = BoardActions.Actions;
 
-const defaultState: Board = new Board();
+const defaultState: Board = null;
 
 const newState = (state, newData) => {
     return Object.assign({}, state, newData)

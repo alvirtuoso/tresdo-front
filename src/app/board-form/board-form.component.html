@@ -18,7 +18,7 @@
                 </div>
                 <div class="modal-bod">
                   <div >
-                    <input name="classification_id" type="checkbox" id="public" value="faad67d2-7ec6-494e-a4ef-ac126481f77f" [checked]="!isPublic" (change)="isPublic = $event.target.checked" />
+                    <input name="classification_id" type="checkbox" id="public" value="faad67d2-7ec6-494e-a4ef-ac126481f77f" [checked]="!isPublic" (change)="isPublic = $event.target.checked" ngModel/>
                     <label for="public">Public</label>
                   </div>
                 </div>

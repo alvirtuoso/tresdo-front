@@ -20,7 +20,7 @@ export class BoardService extends Repository{
         let headers = new Headers({ 'Content-Type': 'application/json' });
 
         return this.request.post(`${this.apiUrl}/create`, board, { headers: headers })
-                        .do( res => { console.log('createboard', res)})
+                        .do( res => { console.log('create request', board); }) // TODO: add some logging
                         .map((res:Response) => res.json())
                         .catch(this.handleError);
     }
