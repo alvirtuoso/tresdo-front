@@ -52,7 +52,7 @@ constructor(private request: Http, private reqClient: HttpClient, private saniti
             return this.request.get(`${this.apiMediaUrl}/blob/${mediaDataId}/${fileExt}`, {responseType: ResponseContentType.Blob})
                 .do(res => {}) //--> todo: do some logging
                 .map(res => {
-                    return new Blob([res.blob()], { type: this.global.dictionary[fileExt] })
+                    return new Blob([res.blob()], { type: this.global.contentTypeDictionary[fileExt] })
                 })
                 .catch(this.handleError);
     }
@@ -115,6 +115,7 @@ constructor(private request: Http, private reqClient: HttpClient, private saniti
         let headers    = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
         let options    = new RequestOptions({ headers: headers });
         console.log("createItemForCard item", item);
+
         return this.request.post(`${this.apiUrl}/createforcard`, item, options)
                         .do( res => console.log('item.service.createItemForCard() HTTP response:', res))
                          .map((res:Response) => res.json())

@@ -16,6 +16,7 @@ export class Global {
     
     public publicClassificationId: string = "faad67d2-7ec6-494e-a4ef-ac126481f77f";
     public teamClassificationId: string = "30c968cb-5686-444d-b138-21d90d15f1ca";
+
     static newGuid() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
@@ -23,7 +24,14 @@ export class Global {
         });
     }
 
-    public dictionary:any = {
+    public statusDictionary:any = {
+        'added': 1,
+        'moved': 2,
+        'inactivated': 3,
+        'removed': 4
+    }
+
+    public contentTypeDictionary:any = {
         '.txt' : 'text/plain',
         '.pdf' : 'application/pdf',
         '.doc' : 'application/vnd.ms-word',

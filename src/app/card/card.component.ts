@@ -83,7 +83,7 @@ private GetItemAttachmentsByItemId(item_Id: string): void{
 private downloadFile(filename:string, file_ext:string, mediaId:string){
   this.itemSvc.getAttachmentBlob(mediaId, file_ext).subscribe( fileData => {
 
-     let blob = new Blob([fileData], { type: this.global.dictionary[file_ext] }); // file_ext must match the Accept type in the http request header
+     let blob = new Blob([fileData], { type: this.global.contentTypeDictionary[file_ext] }); // file_ext must match the Accept type in the http request header
 
     FileSaver.saveAs(fileData, filename);
   })
@@ -367,7 +367,8 @@ deleteCard(card_id: string, name: string, i: number){
   onSubmit(form:any, card:Card):void{
     event.preventDefault;
     let ownerID = window.localStorage.getItem('currentUserId');
-    this.anItem = <Item>{title: form.value["title"], description: "", card_Id: form.value["card_Id"], owner_Id: ownerID, modified_By_Id: ownerID, status_Id: 1};
+    let statId = this.global.statusDictionary['added'];
+    this.anItem = <Item>{title: form.value["title"], description: "", card_Id: form.value["card_Id"], owner_Id: ownerID, modified_By_Id: ownerID, status_Id: statId};
    // create item. List of items for card is returned .
     this.itemSvc.createItemForCard(this.anItem)
                                 .do(data => { console.log('createItem OnSubmit:', data);
