@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Board } from '../model/board';
+import { User } from '../model/user';
 import { BoardService } from '../shared/boardService/board.service';
 import { UserService } from '../shared/userService/user.service';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-// import * as BoardActions from '../actions/board.action';
 import { AppStore } from '../app.store';
-
+import * as UserActions from '../actions/user.action';
 @Component({
   selector: 'nav-menu',
   templateUrl: './nav.component.html',
@@ -16,23 +16,34 @@ import { AppStore } from '../app.store';
 })
 export class NavComponent implements OnInit {
 
+  // Store variables
+  newBoard: Observable<Board>;
+  curUser: Observable<User>;
+
   showNewBoard: { isOn: boolean; } = { isOn: false };
   boards: Board[] = [];
-  newBoard: Observable<Board>;
+  board: Board;
+
   isLoggedIn: Boolean = true;
   titleHeader: String  = "Create Board";
   curUserEmail: String;
   constructor(private store: Store<AppStore>, private userSvc:UserService, private boardSvc: BoardService, private af: AngularFireAuth, private router: Router) {
     this.newBoard = this.store.select('board');
-
+    this.curUser = this.store.select('new_user');
+  
    }
 
   ngOnInit() {
     console.log('herefrom nav.component Init');
     // Check user auth state
     this.af.auth.onAuthStateChanged(curUser => {
+      // Check user if user is logged in
       if(curUser){
         this.isLoggedIn = true;
+        let testUser = new User('123Test', true, 'email@test.com', '', '', '', '', '', '', '', '', 'testuser');
+        testUser.user_Id = '123test';
+        testUser.first_Name = 'TestUser';
+        // this.store.dispatch(new UserActions.AddUser(testUser));
         // Fetch all boards with specified email
         this.boardSvc.getPrivateBoards(curUser.email)
             .subscribe(resp => { this.boards = resp });
@@ -41,7 +52,10 @@ export class NavComponent implements OnInit {
         // User may still have an open logged in session from previously closed browser or so. Save to db if user exists
         this.userSvc.Add(curUser.email, curUser.displayName)
                     .do((usr)=> {window.localStorage.setItem("currentUserId", usr.user_Id)})
-                    .subscribe((usr)=> {});
+                    .subscribe((usr)=> {
+                      // Dispatch action that user is added. Importantly, we need the user_Id for currently logged in user.
+                      this.store.dispatch(new UserActions.AddUser(usr));
+                    });
       }else
       {
         this.isLoggedIn = false;
@@ -54,6 +68,7 @@ export class NavComponent implements OnInit {
 
   // Event when user mouse over the boards dropdown list.
   onMouseEnter(){
+    this.curUser.subscribe((u) => {console.log('onMouseEnter user state:', u);});
     // Listen or subscribe to when a new board is created
     this.newBoard.subscribe((boardData) => {
       console.log('onmouseenter', this.boards);

@@ -7,12 +7,12 @@ import { Item } from '../model/item';
 import { Global } from '../shared/global'
 import { Overlay } from 'ngx-modialog';
 import { Modal } from 'ngx-modialog/plugins/bootstrap';
-// import { Overlay } from 'angular2-modal';
-// import { Modal } from 'angular2-modal/plugins/bootstrap';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 import {IMyOptions, IMyDateModel} from 'mydatepicker';
 import { Media_Data } from '../model/media_data';
 import * as FileSaver from 'file-saver';
+import { User } from '../model/user';
 // import { Repository } from '../model/repository';
 
 @Component({
@@ -28,6 +28,7 @@ showDatePicker: boolean = false;
 showUploadInput: boolean = false;
 enableTitleEdit: boolean = false;
 date: string;
+itemTitle: string;
 textDescription: string;
 btnDateText: string = 'Due Date';
 uploadText: string = 'Upload';
@@ -58,6 +59,7 @@ media: any;
     private cardSvc: CardService, 
     private itemSvc: ItemService, 
     private global: Global,
+    private af: AngularFireAuth,
     private sanitizer: DomSanitizer)
   {
     // overlay.defaultViewContainer = vcRef;
@@ -190,6 +192,20 @@ public onTextUpdate(value){
 }
 
 /**
+ * Saves edited item title
+ * @param value  Event data when content was changed
+ *
+ */
+public onTitleUpdate(value){
+  console.log('anItem', this.anItem);
+  this.anItem.title = value;
+  console.log('this.items', this.items);
+  // this.itemSvc.updateRequest(this.anItem).subscribe( item => {
+  //   this.items[this.index].title = item.title;
+  // })
+}
+
+/**
  * Updates an item in display when updated in the server.
  */
 private reflectItemChangesToView(){
@@ -214,6 +230,7 @@ private openItem(item:Item, index:number, card:Card):void{
   this.itemDlgIsOpen = true;
   this.itemDlgTitle = item.title;
   this.textDescription = item.description;
+  this.itemTitle = item.title;
   this.anItem = item;
   this.card = card;
   this.setDateDisplay(this.anItem);
@@ -313,9 +330,9 @@ private addDropItem(event, cardTarget:Card){
   addNew():void{
     // this.card = <Card>{name: form['name'].value, active: true, owner_id: "d705fa4d-23cc-46ca-8a23-e7257a72bca4", board_id: this.boardId};
     let card = new Card();
+    card.owner_Id = window.localStorage.getItem('currentUserId');
     card.name = "New Card";
     card.active = true;
-    card.owner_Id = this.global.ownerid;
     card.board_Id = this.boardId;
 
     this.cardSvc.create(card).subscribe(newCard => this.cards.push(newCard), err => this.errorMessage = err);
@@ -371,11 +388,12 @@ deleteCard(card_id: string, name: string, i: number){
     this.anItem = <Item>{title: form.value["title"], description: "", card_Id: form.value["card_Id"], owner_Id: ownerID, modified_By_Id: ownerID, status_Id: statId};
    // create item. List of items for card is returned .
     this.itemSvc.createItemForCard(this.anItem)
-                                .do(data => { console.log('createItem OnSubmit:', data);
-                                })
-                                 .map(data => this.items = data)
-                                 .subscribe(data => {card.items.push(data); console.log('items:', card.items)},   // add the new item to card's items
-                                 err => this.errorMessage = <any>err);
+          .do(data => { 
+            console.log('createItem OnSubmit:', data);
+          })
+          .map(data => this.items = data)
+          .subscribe(data => {card.items.push(data); console.log('items:', card.items)},   // add the new item to card's items
+            err => this.errorMessage = <any>err);
 
     // close the form
     this.toggleNewItem(form.value["sort_order"]);

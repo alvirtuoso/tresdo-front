@@ -5,8 +5,9 @@ import { BoardService } from '../shared/boardService/board.service';
 import { Global } from '../shared/global';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import * as BoardActions from '../actions/board.action';
 import { AppStore } from '../app.store';
+import * as BoardActions from '../actions/board.action';
+
 
 @Component({
   selector: 'board-form',
@@ -28,7 +29,8 @@ export class BoardFormComponent implements OnInit {
    }
 
   ngOnInit() {
-
+    let aUser = this.store.select('user');;
+    aUser.subscribe(u => {console.log('bord-form onInit user', u);})
   }
 
 // Close the form
@@ -43,8 +45,7 @@ closeForm(){
   onSubmit(form:any):void{
     this.isPublic = form.value["classification_id"];
     var classId = this.isPublic ? this.global.publicClassificationId : this.global.teamClassificationId;
-console.log('form classid', form.value["classification_id"]);
-console.log('classId', classId);
+
     //  cast to Board object
     this.board = <Board>{
        board_Id: null

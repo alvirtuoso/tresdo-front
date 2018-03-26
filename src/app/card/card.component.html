@@ -65,12 +65,20 @@
               <div class="col s12">
 
                 <div class="row">
-                    <label>Description</label>
+                    
                     <form class="col s12">
+                        <label>Title</label>
                       <div class="row">
-                        <div class="input-field col s12">
-                          <textarea debounce [delay]="700" (onKeyupEmit)="onTextUpdate($event)" name="description" id="textAreaDescription" [(ngModel)]="textDescription" class="materialize-textarea"></textarea>
+                        <div class="input-field col s6">
+                            <input debounce [delay]="700" (onKeyupEmit)="onTitleUpdate($event)" [(ngModel)]="itemTitle" name="itemtitle" id="itemtitle" type="text">
                         </div>
+                      </div>
+                      <label>Description</label>
+                      <div id="row">
+                          <div class="input-field col s12">
+                              
+                            <textarea debounce [delay]="700" (onKeyupEmit)="onTextUpdate($event)" name="description" id="textAreaDescription" [(ngModel)]="textDescription" class="materialize-textarea"></textarea>
+                          </div>
                       </div>
                     </form>
                   </div>

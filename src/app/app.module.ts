@@ -5,6 +5,7 @@ import {HttpClientModule} from '@angular/common/http'; // new in angular 4
 
 import { StoreModule } from '@ngrx/store';
 import { board } from './reducers/board.reducer';
+import { user } from './reducers/user.reducer';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, PreloadAllModules } from '@angular/router';
@@ -62,7 +63,8 @@ import { environment } from '../environments/environment';
     HttpModule,
     HttpClientModule,
     StoreModule.forRoot({ 
-     board
+     board,
+     user
     }),
 
     JsonpModule,
