@@ -29,7 +29,7 @@ export class NavComponent implements OnInit {
   curUserEmail: String;
   constructor(private store: Store<AppStore>, private userSvc:UserService, private boardSvc: BoardService, private af: AngularFireAuth, private router: Router) {
     this.newBoard = this.store.select('board');
-    this.curUser = this.store.select('new_user');
+    this.curUser = this.store.select('user');
   
    }
 

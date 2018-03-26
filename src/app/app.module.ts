@@ -66,7 +66,6 @@ import { environment } from '../environments/environment';
      board,
      user
     }),
-
     JsonpModule,
     FormsModule,
     BrowserAnimationsModule,
