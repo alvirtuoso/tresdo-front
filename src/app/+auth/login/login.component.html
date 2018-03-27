@@ -2,15 +2,13 @@
   <div>
     <form #formData='ngForm' (ngSubmit)="loginPassword(formData)">
         <p>
-            <label> Enter email address
-                <input type="text" name="email" (ngModel)="email" requred>
-            </label>
+                <input placeholder="email" type="text" name="email" (ngModel)="email" requred>
         </p>
         <p>
-            <label> Password 
 
-                <input type="text" name="password" (ngModel)="password" required>
-            </label>
+
+                <input type="text" placeholder="password" name="password" (ngModel)="password" required>
+
         </p>
 
         <button type="submit" [disabled]="!formData.valid">Login</button>
@@ -27,7 +25,7 @@
   <br>
     <div>
         <a routerLink="/reset">Reset password</a>
-        
+
     </div>
     <div>
         <a routerLink="/signup">Register</a>

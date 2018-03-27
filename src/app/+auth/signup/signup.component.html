@@ -2,32 +2,32 @@
     <div>
         <form #formData='ngForm' (ngSubmit)="onSubmit(formData)">
             <p>
-                <label> Enter email address
-                    <input type="text" name="email" (ngModel)="email" requred>
-                </label>
+
+                    <input placeholder="email" type="text" name="email" (ngModel)="email" requred>
+
             </p>
             <p>
-            <label> Password {{password}}
-                    
-                <input type="text" name="password" (ngModel)="password" required>
-            </label>
+
+
+                <input placeholder="password" type="text" name="password" (ngModel)="password" required>
+
             </p>
-    
+
             <button type="submit" [disabled]="!formData.valid">Register</button>
             <a routerLink="/login">Login</a>
         </form>
-        
+
     </div>
     <br>
   <div>
       {{message}}
   </div>
   </div>
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
 
 

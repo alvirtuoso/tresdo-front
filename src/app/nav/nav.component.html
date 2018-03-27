@@ -26,11 +26,12 @@
     </div>
   </nav>
  <!-- Dropdown menu for boards selection. This is hidden until triggered at line 19 -->
- <ul id="boards_" class="dropdown-content truncate" (mouseenter)="onMouseEnter()"> -->
-  <li class="boards-link" *ngFor="let board of boards; let i = index; trackBy board?.board_Id"><a [routerLink]= "['/board', board.board_Id]">{{board.title}}</a></li>
+ <ul id="boards_" class="dropdown-content" (mouseenter)="onMouseEnter()"> 
+    <li><a></a>{{ accessLevel}} boards</li>
+  <li *ngFor="let board of boards; let i = index; trackBy board?.board_Id"><a [routerLink]= "['/board', board.board_Id]">{{board.title}}</a></li>
 </ul>
 <!--Dropdown menu for mobile devices-->
- <ul id="boards_mobile" class="dropdown-content"> -->
+ <ul id="boards_mobile" class="dropdown-content"> 
   <li class="boards-link" *ngFor="let board of boards; let i = index; trackBy board?.board_Id"><a [routerLink]= "['/board', board.board_Id]">{{board.title}}</a></li>
 </ul>
  <!-- Dropdown ends ----- >

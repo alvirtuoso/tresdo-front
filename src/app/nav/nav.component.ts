@@ -27,6 +27,7 @@ export class NavComponent implements OnInit {
   isLoggedIn: Boolean = true;
   titleHeader: String  = "Create Board";
   curUserEmail: String;
+  accessLevel: String = "Public";
   constructor(private store: Store<AppStore>, private userSvc:UserService, private boardSvc: BoardService, private af: AngularFireAuth, private router: Router) {
     this.newBoard = this.store.select('board');
     this.curUser = this.store.select('user');
@@ -40,9 +41,7 @@ export class NavComponent implements OnInit {
       // Check user if user is logged in
       if(curUser){
         this.isLoggedIn = true;
-        let testUser = new User('123Test', true, 'email@test.com', '', '', '', '', '', '', '', '', 'testuser');
-        testUser.user_Id = '123test';
-        testUser.first_Name = 'TestUser';
+        this.accessLevel = "Private"
         // this.store.dispatch(new UserActions.AddUser(testUser));
         // Fetch all boards with specified email
         this.boardSvc.getPrivateBoards(curUser.email)
@@ -68,7 +67,7 @@ export class NavComponent implements OnInit {
 
   // Event when user mouse over the boards dropdown list.
   onMouseEnter(){
-    this.curUser.subscribe((u) => {console.log('onMouseEnter user state:', u);});
+    this.accessLevel = this.isLoggedIn ? "Private" : "Public";
     // Listen or subscribe to when a new board is created
     this.newBoard.subscribe((boardData) => {
       console.log('onmouseenter', this.boards);
